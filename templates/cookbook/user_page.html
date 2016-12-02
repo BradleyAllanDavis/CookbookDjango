@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Cookbook</title>
+    <title>User Page</title>
 
     <meta name="description" content="CS564 Project">
     <meta name="author" content="Bradley">
@@ -88,53 +88,83 @@
             <!-- NavBar -->
 
             <div class="row">
-
-                <!-- Recipe Thumbnails -->
-                {% if recipe_list %}
-                {% for recipe in recipe_list %}
-                <div class="col-md-4">
-                    <div class="thumbnail">
-                        <div class="caption">
-                            <h3>
-                                {{ recipe.title }}
-                            </h3>
-                            <p>
-                                {{recipe.description}}
-                            </p>
-                            <p>
-                                <a class="btn btn-primary" href="{% url 'detail' recipe.id %}">View Recipe</a>
-                            </p>
+                <div class="col-md-12">
+                    <h3>Saved Searches</h3>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h4 class="list-group-item-heading">
+                                Search Name
+                            </h4>
+                        </div>
+                        <div class="list-group-item">
+                            <h4 class="list-group-item-heading">
+                                Search Name
+                            </h4>
+                        </div>
+                        <div class="list-group-item">
+                            <h4 class="list-group-item-heading">
+                                Search Name
+                            </h4>
+                        </div>
+                        <h3>Favorited Recipes</h3>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">
+                                    Recipe Name
+                                </h4>
+                                <p class="list-group-item-text">
+                                    Description
+                                </p>
+                            </div>
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">
+                                    Recipe Name
+                                </h4>
+                                <p class="list-group-item-text">
+                                    Description
+                                </p>
+                            </div>
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">
+                                    Recipe Name
+                                </h4>
+                                <p class="list-group-item-text">
+                                    Description
+                                </p>
+                            </div>
+                            <h3>Created/Modified Recipes</h3>
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <h4 class="list-group-item-heading">
+                                        Recipe Name
+                                    </h4>
+                                    <p class="list-group-item-text">
+                                        Description
+                                    </p>
+                                </div>
+                                <div class="list-group-item">
+                                    <h4 class="list-group-item-heading">
+                                        Recipe Name
+                                    </h4>
+                                    <p class="list-group-item-text">
+                                        Description
+                                    </p>
+                                </div>
+                                <div class="list-group-item">
+                                    <h4 class="list-group-item-heading">
+                                        Recipe Name
+                                    </h4>
+                                    <p class="list-group-item-text">
+                                        Description
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
-                {% else %}
-                <p>No recipes are available.</p>
-                {% endif %}
-                <!-- Recipe Thumbnails -->
 
-            </div>
-
-        </div>
-
-        <!-- Pagination -->
-        <div class="text-center">
-            <ul class="pagination">
-                <li><a href="#">Prev</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">Next</a></li>
-            </ul>
-        </div>
-        <!-- Pagination -->
-
-    </div>
-</div>
-</div>
-
-<script src="{% static 'cookbook/js/jquery.min.js' %}"></script>
-<script src="{% static 'cookbook/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'cookbook/js/scripts.js' %}"></script>
+                <script src="{% static 'cookbook/js/jquery.min.js' %}"></script>
+                <script src="{% static 'cookbook/js/bootstrap.min.js' %}"></script>
+                <script src="{% static 'cookbook/js/scripts.js' %}"></script>
 </body>
 </html>
