@@ -10,4 +10,7 @@ class TestRecipe(models.Model):
 	instructions = models.CharField(max_length=2048)
 	is_private = models.BooleanField()
 
+	def __str__(self):
+		return self.title
+
 # Create your models here.
