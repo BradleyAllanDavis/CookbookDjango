@@ -92,6 +92,7 @@ class Recipe(models.Model):
     is_private = models.BooleanField(blank=True)
     parent_recipe = models.ForeignKey('Recipe', null=True, blank=True)
     tags = models.ManyToManyField('Tag', blank=True)
+    serves = models.IntegerField()
 
     def __str__(self):
         return self.title
