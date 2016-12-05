@@ -94,15 +94,9 @@
                         <h4>Description</h4>
                         <p>{{ recipe.description }}</p>
                         <ul>
-                            <li>Ingredient</li>
-                            <li>Ingredient</li>
-                            <li>Ingredient</li>
-                            <li>Ingredient</li>
-                            <li>Ingredient</li>
-                            <li>Ingredient</li>
-                            <li>Ingredient</li>
-                            <li>Ingredient</li>
-                            <li>Ingredient</li>
+                            {% for ingredient in recipe.recipeingredient_set.all %}
+                            <li>{{ ingredient }} </li>
+                            {% endfor %}
                         </ul>
                         <br>
                         <h4>Preparation Instructions</h4><br>

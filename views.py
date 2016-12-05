@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
@@ -7,19 +8,18 @@ from cookbook.models import Recipe
 
 
 def index(request):
-    recipe_list = Recipe.objects.order_by('-recipe_id')[:5]
+    recipe_list = Recipe.objects.order_by('-id')[:5]
     template = loader.get_template('cookbook/index.html')
-    context = {
-        'recipe_list': recipe_list, }
+    context = {'recipe_list': recipe_list}
     return HttpResponse(template.render(context, request))
 
 
 def detail(request, recipe_id):
-    try:
-        recipe = Recipe.objects.get(pk=recipe_id)
-    except Recipe.DoesNotExist:
-        raise Http404("Recipe does not exist")
-    return render(request, 'cookbook/detail.html', {'recipe': recipe})
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    return HttpResponse(
+		loader.get_template(
+			'cookbook/detail.html').render(
+				{'recipe': recipe,}, request))
 
 
 def user_page(request):
