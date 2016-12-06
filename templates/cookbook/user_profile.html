@@ -16,9 +16,11 @@
 
 <p>Submissions:
     {% if  user.usersubmitted_set %}
-        <ul>{% for submitted_recipe in user.usersubmission_set.all %}
-        <li>{{ submitted_recipe.recipe }}</li>
-        {% endfor %}</ul>
+        <ul>
+            {% for submitted_recipe in user.usersubmission_set.all %}
+            <li>{{ submitted_recipe.recipe }}</li>
+            {% endfor %}
+        </ul>
     {% else %}
         No submissions.
     {% endif %}

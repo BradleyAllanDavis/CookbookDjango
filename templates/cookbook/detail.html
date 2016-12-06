@@ -14,7 +14,7 @@
     <p>
         {{ recipe.instructions }}
     </p><br>
-    <button type="button" class="btn btn-default">
+    <button type="button" class="btn btn-default" href="{% url 'favorite' recipe.id %}">
                             Favorite Recipe
                         </button>
     <button type="button" class="btn btn-default">
