@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.core.checks import Error, register
+from django.contrib.auth.models import User
 
 
 class FoodGroup(models.Model):
@@ -48,10 +49,6 @@ class Ingredient(models.Model):
     
     def __str__(self):
         return self.name
-
-
-class LoggedInUser(models.Model):
-    user_id = models.OneToOneField('User', models.CASCADE, primary_key=True)
 
 
 class Nutrient(models.Model):
@@ -100,7 +97,7 @@ class Recipe(models.Model):
 
 class SavedSearch(models.Model):
     search_name = models.CharField(max_length=64, blank=True, null=False)
-    user_id = models.ForeignKey('User', models.CASCADE, )
+    user = models.ForeignKey(User, models.CASCADE, )
 
     def __str__(self):
         return self.search_name
@@ -131,13 +128,16 @@ class Tag(models.Model):
         return self.tag_name
 
 
-class User(models.Model):
-    user_id = models.IntegerField(primary_key=True, blank=True)
-    password = models.CharField(max_length=32)
-    first_name = models.CharField(max_length=32, blank=True, null=True)
-    last_name = models.CharField(max_length=32, blank=True, null=True)
-    favorite_recipes = models.ManyToManyField('Recipe', related_name='favorite_recipe')
-    submitted_recipes = models.ManyToManyField('Recipe', related_name='submitted_recipe')
+class UserFavorite(models.Model):
+    user = models.ForeignKey(User)
+    recipe = models.ForeignKey('Recipe')
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return str(self.recipe)
+
+class UserSubmission(models.Model):
+    user = models.ForeignKey(User)
+    recipe = models.ForeignKey('Recipe')
+
+    def __str__(self):
+        return str(self.recipe)

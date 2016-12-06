@@ -22,6 +22,12 @@ def detail(request, recipe_id):
 				{'recipe': recipe,}, request))
 
 
+def favorite(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+
+    return HttpResponseRedirect(reverse('cookbook:userfavorites'))
+
+
 def user_page(request):
     return render(request, 'cookbook/user_page.html')
 

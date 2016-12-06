@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p>This is your profile, {{ user.username }}.</p>
+<p>Favorites:
+    {% if user.userfavorite_set %}
+        <ul>
+            {% for favorite_recipe in user.userfavorite_set.all %}
+            <li>{{ favorite_recipe.recipe }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        No favorites.
+    {% endif %}
+</p>
+
+<p>Submissions:
+    {% if  user.usersubmitted_set %}
+        <ul>{% for submitted_recipe in user.usersubmission_set.all %}
+        <li>{{ submitted_recipe.recipe }}</li>
+        {% endfor %}</ul>
+    {% else %}
+        No submissions.
+    {% endif %}
+</p>
+
+{% endblock content %}
