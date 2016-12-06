@@ -37,5 +37,8 @@ def search_recipes(request):
     context = {'search_results': results}
     return HttpResponse(template.render(context, request))
 
+def advanced_recipe_search(request):
+    print(request.GET)
+
 def create_account(request):
     return render(request, 'cookbook/create_user_account.html')
