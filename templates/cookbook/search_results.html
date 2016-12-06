@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if search_results %}
+    {% for recipe in search_results %}
+        <a href="{% url 'detail' recipe.id %}">{{ recipe.title }}</a>
+    {% endfor %}
+{% else %}
+    No matching recipes.
+{% endif %}
+
+
+{% endblock %}
+

@@ -4,12 +4,12 @@ from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
 from cookbook.models import Recipe, UserFavorite
-
+from cookbook.forms import SearchForm
 
 def index(request):
     recipe_list = Recipe.objects.order_by('-id')[:5]
     template = loader.get_template('cookbook/index.html')
-    context = {'recipe_list': recipe_list}
+    context = {'recipe_list': recipe_list, 'simple_search_form' : SearchForm() }
     return HttpResponse(template.render(context, request))
 
 
@@ -29,9 +29,13 @@ def favorite(request, recipe_id):
     return HttpResponseRedirect(reverse('user_profile'))
 
 
-def advanced_search(request):
-    return render(request, 'cookbook/advanced_search.html')
-
+def search_recipes(request):
+    print(request.GET)
+    search_term = request.GET.get("search_term")
+    results = Recipe.objects.filter(title__contains=search_term)    
+    template = loader.get_template('cookbook/search_results.html')
+    context = {'search_results': results}
+    return HttpResponse(template.render(context, request))
 
 def create_account(request):
     return render(request, 'cookbook/create_user_account.html')
