@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
-
+from django.urls import reverse
 from cookbook.models import Recipe, UserFavorite
 
 
@@ -15,7 +15,6 @@ def index(request):
 
 def detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    print(str(request.user))
     return HttpResponse(
 		loader.get_template(
 			'cookbook/detail.html').render(
@@ -26,19 +25,8 @@ def favorite(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     user_favorite = UserFavorite(user=request.user, recipe=recipe)
     user_favorite.save() 
-    return HttpResponseRedirect(reverse('cookbook:userfavorites'))
-
-
-def user_page(request):
-    return render(request, 'cookbook/user_page.html')
-
-
-def sign_in(request):
-    return render(request, 'cookbook/sign_in.html')
-
-
-def readme(request):
-    return render(request, 'cookbook/readme.html')
+    print("user " + str(request.user) + " favorited recipe " + str(recipe))
+    return HttpResponseRedirect(reverse('user_profile'))
 
 
 def advanced_search(request):

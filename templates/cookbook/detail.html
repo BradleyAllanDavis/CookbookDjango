@@ -1,4 +1,4 @@
-{% extends 'cookbook/base.html' %} 
+{% extends 'base.html' %} 
 {% block content %}
 <form>
     <h3>{{ recipe.title }}</h3>
@@ -14,9 +14,9 @@
     <p>
         {{ recipe.instructions }}
     </p><br>
-    <button type="button" class="btn btn-default" href="{% url 'favorite' recipe.id %}">
+    <a class="btn btn-default" href="{% url 'favorite' recipe.id %}">
                             Favorite Recipe
-                        </button>
+                        </a>
     <button type="button" class="btn btn-default">
                             Modify Recipe
                         </button>
