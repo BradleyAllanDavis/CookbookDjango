@@ -4,26 +4,26 @@
 <p>This is your profile, {{ user.username }}.</p>
 <p>Favorites:
     {% if user.userfavorite_set %}
-        <ul>
-            {% for favorite_recipe in user.userfavorite_set.all %}
-            <li>{{ favorite_recipe.recipe }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        No favorites.
-    {% endif %}
+<ul>
+    {% for recipe_relation in user.userfavorite_set.all %}
+    <li><a href="{% url 'cookbook:detail' recipe_relation.recipe.id %}">{{ recipe_relation.recipe }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+No favorites.
+{% endif %}
 </p>
 
 <p>Submissions:
-    {% if  user.usersubmitted_set %}
-        <ul>
-            {% for submitted_recipe in user.usersubmission_set.all %}
-            <li>{{ submitted_recipe.recipe }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        No submissions.
-    {% endif %}
+    {% if user.usersubmitted_set %}
+<ul>
+    {% for recipe_relation in user.usersubmission_set.all %}
+    <li><a href="{% url 'cookbook:detail' recipe_relation.recipe.id %}">{{ recipe_relation.recipe }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+No submissions.
+{% endif %}
 </p>
 
 {% endblock content %}

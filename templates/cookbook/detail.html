@@ -1,12 +1,17 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block content %}
+
+{% if error_message %}
+<p style="color:red">{{ error_message }}</p>
+{% endif %}
+
 <form>
     <h3>{{ recipe.title }}</h3>
     <h4>Description</h4>
     <p>{{ recipe.description }}</p>
     <ul>
         {% for ingredient in recipe.recipeingredient_set.all %}
-        <li>{{ ingredient }} </li>
+        <li>{{ ingredient }}</li>
         {% endfor %}
     </ul>
     <br>
@@ -14,11 +19,11 @@
     <p>
         {{ recipe.instructions }}
     </p><br>
-    <a class="btn btn-default" href="{% url 'favorite' recipe.id %}">
-                            Favorite Recipe
-                        </a>
+    <a class="btn btn-default" href="{% url 'cookbook:favorite' recipe.id %}">
+        Favorite Recipe
+    </a>
     <button type="button" class="btn btn-default">
-                            Modify Recipe
-                        </button>
+        Modify Recipe
+    </button>
 </form>
 {% endblock %}

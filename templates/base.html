@@ -16,80 +16,81 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
+<div class="container-fluid">
+    <div class="row">
 
-                <!-- NavBar -->
-                <nav class="navbar navbar-default navbar-static-top" role="navigation">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                                data-target="#bs-example-navbar-collapse-1">
-                            <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
-                                class="icon-bar"></span><span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="{% url 'index' %}">Cookbook</a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li>
-                                <a href="{% url 'advanced_search' %}">Advanced Search</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search On<strong
-                                        class="caret"></strong></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">Recipe Name</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Ingredient Name</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        
-<form action="search_recipes" class="navbar-form navbar-left" role="search" method="GET">
-{{ simple_search_form.search_term }} 
-<input type="submit" value="Submit" class="btn btn-default"/>
-</form> 
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a href="{% url 'login' %}">Sign In</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<strong
-                                        class="caret"></strong></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="create_user_account.html">Create Account</a>
-                                    </li>
-                                    <li class="divider">
-                                    <li> 
-                                        <a href="{% if request.user %} {% url 'user_profile' %} {% else %} {% url 'login' %} {% endif %}">My Page</a>
-                                    </li>
-                                    <li class="divider">
-                                    <li>
-                                        <a href="{% url 'password_change' %}">Change password</a>
-                                    </li>
-                                    <li class="divider">
-                                    </li>
-                                    <li>
-                                        <a href="#">Log Out</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-        </nav></div>
-    </div>
-    <div class="content container">
-        <div class="row">
-            <div class="col-md-8">
-            {% block content %}
-            {% endblock %}      
+        <!-- NavBar -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                        class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'cookbook:index' %}">Cookbook</a>
             </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{% url 'cookbook:advanced_search' %}">Advanced Search</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search On<strong
+                                class="caret"></strong></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">Recipe Name</a>
+                            </li>
+                            <li>
+                                <a href="#">Ingredient Name</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <form action="{% url 'cookbook:advanced_recipe_search_results' %}" class="navbar-form navbar-left" role="search" method="GET">
+                    {{ simple_search_form.search_term }}
+                    <input type="submit" value="Submit" class="btn btn-default"/>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'cookbook:login' %}">Sign In</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<strong
+                                class="caret"></strong></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="create_user_account.html">Create Account</a>
+                            </li>
+                            <li class="divider">
+                            <li>
+                                <a href="{% if request.user %} {% url 'cookbook:user_profile' %} {% else %} {% url 'cookbook:login' %} {% endif %}">My
+                                    Page</a>
+                            </li>
+                            <li class="divider">
+                            <li>
+                                <a href="{% url 'cookbook:password_change' %}">Change password</a>
+                            </li>
+                            <li class="divider">
+                            </li>
+                            <li>
+                                <a href="#">Log Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="content container">
+    <div class="row">
+        <div class="col-md-8">
+            {% block content %}
+            {% endblock %}
         </div>
     </div>
+</div>
 
 <script src="{% static 'cookbook/js/jquery.min.js' %}"></script>
 <script src="{% static 'cookbook/js/bootstrap.min.js' %}"></script>

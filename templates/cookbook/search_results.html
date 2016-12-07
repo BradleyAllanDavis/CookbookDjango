@@ -2,11 +2,13 @@
 {% block content %}
 
 {% if search_results %}
+<ol>
     {% for recipe in search_results %}
-        <a href="{% url 'detail' recipe.id %}">{{ recipe.title }}</a>
+    <li><a href="{% url 'cookbook:detail' recipe.id %}">{{ recipe.title }}</a></li>
     {% endfor %}
+</ol>
 {% else %}
-    No matching recipes.
+No matching recipes.
 {% endif %}
 
 
