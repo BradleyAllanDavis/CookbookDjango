@@ -2,27 +2,63 @@
 {% block content %}
 
 <form method="get" action="{% url 'cookbook:advanced_recipe_search_results' %}">
-    <table>
-        <tr>
-            <td>{{ advanced_search_form.recipe_name_search_term.label_tag }}</td>
-            <td>{{ advanced_search_form.recipe_name_search_term }}</td>
-        </tr>
-        <tr>
-            <td>{{ advanced_search_form.tags.label_tag }}</td>
-            <td>{{ advanced_search_form.tags }}</td>
-        </tr>
-        <tr>
-            <td>{{ advanced_search_form.food_groups.label_tag }}</td>
-            <td>{{ advanced_search_form.food_groups }}</td>
-        </tr>
-        <tr>
-            <td>{{ advanced_search_form.ingredient_name_search_term.label_tag }}</td>
-            <td>{{ advanced_search_form.ingredient_name_search_term }}</td>
-        </tr>
-    </table>
+  <table>
+    <tr>
+      <td>{{ advanced_search_form.recipe_name_search_term.label_tag }}</td>
+      <td>{{ advanced_search_form.recipe_name_search_term }}</td>
+    </tr>
+    <tr>
+      <td>{{ advanced_search_form.ingredient_name_search_term.label_tag }}</td>
+      <td>{{ advanced_search_form.ingredient_name_search_term }}</td>
+    </tr>
+    <tr>
+      <td>{{ advanced_search_form.tags.label_tag }}</td>
+      <td>{{ advanced_search_form.tags }}</td>
+    </tr>
+    <tr>
+      <td>{{ advanced_search_form.food_groups.label_tag }}</td>
+      <td>{{ advanced_search_form.food_groups }}</td>
+    </tr>
+  </table>
 
-    <input type="submit" value="Submit" class="btn btn-primary"/>
+  <input type="submit" value="Submit" class="btn btn-primary"/>
 </form>
+
+<!-- <div class="container-fluid"> -->
+
+<!--   <div class="row"> -->
+<!--     <div class="col-md-12"> -->
+<!--       <form method="get" action="{% url 'cookbook:advanced_recipe_search_results' %}"> -->
+<!--         <table> -->
+<!--           <tr> -->
+<!--             <td>{{ advanced_search_form.recipe_name_search_term.label_tag }}</td> -->
+<!--             <td>{{ advanced_search_form.recipe_name_search_term }}</td> -->
+<!--           </tr> -->
+<!--           <tr> -->
+<!--             <td>{{ advanced_search_form.ingredient_name_search_term.label_tag }}</td> -->
+<!--             <td>{{ advanced_search_form.ingredient_name_search_term }}</td> -->
+<!--           </tr> -->
+<!--     </div> -->
+<!--   </div> -->
+
+
+<!--   <div class="row"> -->
+<!--     <div class="col-md-12"> -->
+<!--           <tr> -->
+<!--             <td>{{ advanced_search_form.tags.label_tag }}</td> -->
+<!--             <td>{{ advanced_search_form.tags }}</td> -->
+<!--           </tr> -->
+<!--           <tr> -->
+<!--             <td>{{ advanced_search_form.food_groups.label_tag }}</td> -->
+<!--             <td>{{ advanced_search_form.food_groups }}</td> -->
+<!--           </tr> -->
+<!--         </table> -->
+<!--       </form> -->
+<!--     </div> -->
+<!--   </div> -->
+
+<!--   <input type="submit" value="Submit" class="btn btn-primary"/> -->
+<!-- </div> -->
 
 {% endblock %}
 

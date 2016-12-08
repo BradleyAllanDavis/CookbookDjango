@@ -8,11 +8,7 @@ class SimpleSearchForm(forms.Form):
 
 
 class AdvancedSearchForm(forms.Form):
-	recipe_name_search_term = forms.CharField(max_length=100, required=False,
-		label='Recipe name should contain')
-	tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
-		required=False)
-	food_groups = forms.ModelMultipleChoiceField(
-		queryset=FoodGroup.objects.all(), required=False)
-	ingredient_name_search_term = forms.CharField(
-		label="Ingredients should contain", max_length=100, required=False)
+	recipe_name_search_term     = forms.CharField(max_length=100, required=False, label='Recipe name should contain')
+	ingredient_name_search_term = forms.CharField(label="Ingredients should contain", max_length=100, required=False)
+	tags                        = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
+	food_groups                 = forms.ModelMultipleChoiceField(queryset=FoodGroup.objects.all(), required=False)

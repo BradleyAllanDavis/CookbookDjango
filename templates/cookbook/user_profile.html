@@ -1,29 +1,70 @@
 {% extends "base.html" %}
 {% block content %}
 
-<p>This is your profile, {{ user.username }}.</p>
-<p>Favorites:
-    {% if user.userfavorite_set %}
-<ul>
-    {% for recipe_relation in user.userfavorite_set.all %}
-    <li><a href="{% url 'cookbook:detail' recipe_relation.recipe.id %}">{{ recipe_relation.recipe }}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-No favorites.
-{% endif %}
-</p>
+<h2>Welcome to you user profile, {{ user.username }}.</h2>
+<hr>
 
-<p>Submissions:
-    {% if user.usersubmitted_set %}
-<ul>
-    {% for recipe_relation in user.usersubmission_set.all %}
-    <li><a href="{% url 'cookbook:detail' recipe_relation.recipe.id %}">{{ recipe_relation.recipe }}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-No submissions.
-{% endif %}
-</p>
+<!-- Favorited Recipes -->
+<div class="row">
+  <div class="col-md-12">
+    <h3>Favorited Recipes</h3>
+    <div class="list-group">
+      {% if user.userfavorite_set %}
+      <div class="list-group-item">
+        {% for recipe_relation in user.userfavorite_set.all %}
+        <h4 class="list-group-item-heading">
+          <a href="{% url 'cookbook:detail' recipe_relation.recipe.id %}">{{ recipe_relation.recipe }}</a>
+          <i> - {{ recipe_relation.recipe.description }}</i>
+        </h4>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="list-group-item">
+        <h4 class="list-group-item-heading">
+          <p>No Favorites</p>
+        </h4>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<!-- Favorited Recipes -->
+
+<!-- Saved Searches -->
+<div class="row">
+  <div class="col-md-12">
+    <h3>Saved Searches</h3>
+    <div class="list-group">
+      {% if savedsearch_set %}
+      <div class="list-group-item">
+        {% for savedsearch_relation in savedsearch_set.all %}
+        <h4 class="list-group-item-heading">
+          <a href="{% url 'cookbook:saved_search' savedsearch_relation.savedsearch.search_name %}">{{ savedsearch_relation.savedsearch.search_name }}</a>
+        </h4>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="list-group-item">
+        <h4 class="list-group-item-heading">
+          <p>No Saved Searches</p>
+        </h4>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<!-- Saved Searches -->
+
+<!-- <p>Submissions: -->
+<!--   {% if user.usersubmitted_set %} -->
+<!--   <ul> -->
+<!--     {% for recipe_relation in user.usersubmission_set.all %} -->
+<!--     <li><a href="{% url 'cookbook:detail' recipe_relation.recipe.id %}">{{ recipe_relation.recipe }}</a></li> -->
+<!--     {% endfor %} -->
+<!--   </ul> -->
+<!--   {% else %} -->
+<!--   No submissions. -->
+<!--   {% endif %} -->
+<!-- </p> -->
 
 {% endblock content %}
