@@ -100,8 +100,8 @@ class Recipe(models.Model):
 
 class SavedSearch(models.Model):
     id = models.IntegerField(primary_key=True, blank=True)
-    search_name = models.CharField(max_length=64, blank=True, null=False)
     user = models.ForeignKey(User, models.CASCADE)
+    search_name = models.CharField(max_length=64, blank=True, null=False)
     recipe_search_term = models.CharField(max_length=100, blank=True, null=True)
     ingredient_search_term = models.CharField(max_length=100, blank=True, null=True)
 
