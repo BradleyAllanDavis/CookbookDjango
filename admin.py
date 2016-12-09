@@ -1,11 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
-from django.contrib.auth.models import User
-
 from cookbook.models import UserFavorite, UserSubmission, FoodGroup, \
-     GramMapping, IngredientNutrient, Ingredient, Nutrient, RecipeIngredient, \
-     Recipe, SavedSearch, SearchFoodGroup, SearchTag, Tag, User
+    GramMapping, IngredientNutrient, Ingredient, Nutrient, RecipeIngredient, \
+    Recipe, SavedSearch, SearchFoodGroup, SearchTag, Tag
 
 admin.site.register(UserFavorite)
 admin.site.register(UserSubmission)

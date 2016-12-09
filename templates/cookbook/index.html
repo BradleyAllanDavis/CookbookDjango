@@ -5,19 +5,19 @@
 {% if recipe_list %}
 {% for recipe in recipe_list %}
 <div class="col-md-4">
-  <div class="thumbnail">
-    <div class="caption">
-      <h3>
-        {{ recipe.title }}
-      </h3>
-      <p>
-        {{recipe.description}}
-      </p>
-      <p>
-        <a class="btn btn-primary" href="{% url 'cookbook:detail' recipe.id %}">View Recipe</a>
-      </p>
+    <div class="thumbnail">
+        <div class="caption">
+            <h3>
+                {{ recipe.title }}
+            </h3>
+            <p>
+                {{recipe.description}}
+            </p>
+            <p>
+                <a class="btn btn-primary" href="{% url 'cookbook:detail' recipe.id %}">View Recipe</a>
+            </p>
+        </div>
     </div>
-  </div>
 </div>
 {% endfor %}
 {% else %}
@@ -31,10 +31,10 @@
 
 <!-- Pagination -->
 <div class="text-center">
-  <ul class="pagination">
-    <li><a href="#">Prev</a></li>
-    <li><a href="#">Next</a></li>
-  </ul>
+    <ul class="pagination">
+        <li><a href="#">Prev</a></li>
+        <li><a href="#">Next</a></li>
+    </ul>
 </div>
 <!-- Pagination -->
 {% endblock %}
