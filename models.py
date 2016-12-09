@@ -155,4 +155,13 @@ class UserSubmission(models.Model):
     class Meta:
         unique_together = ('user', 'recipe')
 
+
+class RecipeTag(models.Model):
+    recipe = models.ForeignKey('Recipe', models.CASCADE)
+    tag = models.ForeignKey('Tag', models.CASCADE)
+
+    def __str__(self):
+        return str(self.recipe) + " has tag " + str(self.tag)
+
+
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python
