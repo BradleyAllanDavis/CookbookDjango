@@ -31,9 +31,9 @@ class GramMapping(models.Model):
 
 
 class IngredientNutrient(models.Model):
-    recipe_id   = models.ForeignKey('Recipe')
-    nutrient_id = models.ForeignKey('Nutrient')
-    amount      = models.FloatField()
+    ingredient_id = models.ForeignKey('Ingredient')
+    nutrient_id   = models.ForeignKey('Nutrient')
+    amount        = models.FloatField()
 
     def __str__(self):
         return str(recipe_id) + " " + str(nutrient_id) + " " + str(amount)
