@@ -90,9 +90,9 @@ class Recipe(models.Model):
     serves = models.IntegerField()
 
     # Unneeded
-    is_private = models.BooleanField(blank=True)
-    parent_recipe = models.ForeignKey('Recipe', null=True, blank=True)
-    tags = models.ManyToManyField('Tag', blank=True)
+    # is_private = models.BooleanField(blank=True)
+    # parent_recipe = models.ForeignKey('Recipe', null=True, blank=True)
+    # tags = models.ManyToManyField('Tag', blank=True)
 
     def __str__(self):
         return self.title
