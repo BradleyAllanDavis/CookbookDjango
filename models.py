@@ -41,7 +41,7 @@ class IngredientNutrient(models.Model):
 
 
 class Ingredient(models.Model):
-    ingredient_id = models.IntegerField(primary_key=True, blank=True)
+    id = models.IntegerField(primary_key=True, blank=True)
     food_group = models.ForeignKey(FoodGroup, models.SET_NULL, null=True)
     name = models.CharField(max_length=256)
 
@@ -50,8 +50,8 @@ class Ingredient(models.Model):
 
 
 class Nutrient(models.Model):
-    nutrient = models.IntegerField(primary_key=True, blank=True, )
-    measured_in = models.CharField(max_length=64, blank=True, null=True)
+    id = models.IntegerField(primary_key=True, blank=True)
+    unit = models.CharField(max_length=64, blank=True, null=True)
     name = models.CharField(max_length=128)
 
     def __str__(self):
@@ -83,24 +83,27 @@ class RecipeIngredient(models.Model):
 
 
 class Recipe(models.Model):
+    id = models.IntegerField(primary_key=True, blank=True)
     title = models.CharField(max_length=64, blank=True, null=False)
     description = models.CharField(max_length=2048, blank=True, null=True)
     instructions = models.CharField(max_length=2048, blank=True, null=True)
+    serves = models.IntegerField()
+
+    # Unneeded
     is_private = models.BooleanField(blank=True)
     parent_recipe = models.ForeignKey('Recipe', null=True, blank=True)
     tags = models.ManyToManyField('Tag', blank=True)
-    serves = models.IntegerField()
 
     def __str__(self):
         return self.title
 
 
 class SavedSearch(models.Model):
+    id = models.IntegerField(primary_key=True, blank=True)
     search_name = models.CharField(max_length=64, blank=True, null=False)
     user = models.ForeignKey(User, models.CASCADE)
     recipe_search_term = models.CharField(max_length=100, blank=True, null=True)
-    ingredient_search_term = models.CharField(max_length=100, blank=True,
-        null=True)
+    ingredient_search_term = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.search_name
