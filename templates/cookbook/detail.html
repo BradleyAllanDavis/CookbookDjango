@@ -7,56 +7,62 @@
 
 <div class="row">
 
-  <!-- Recipe Information -->
-  <div class="col-md-4">
-    <div class="thumbnail">
-      <form>
-        <h3>{{ recipe.title }}</h3><br>
-        <h4>Description</h4>
-        <p>{{ recipe.description }}</p><br>
-        <h4>Ingredients</h4>
-        <ul>
-          {% for ingredient in recipe.recipeingredient_set.all %}
-          <li>{{ ingredient }}</li>
-          {% endfor %}
-        </ul><br>
-        <h4>Preparation Instructions</h4>
-        <p>
-          {{ recipe.instructions }}
-        </p><br>
-        <h4>Tags</h4>
-        <!-- <ul> -->
-        <!--   {% for ingredient in recipe.recipeingredient_set.all %} -->
-        <!--   <li>{{ ingredient }}</li> -->
-        <!--   {% endfor %} -->
-        <!-- </ul> -->
-      </form>
+    <!-- Recipe Information -->
+    <div class="col-md-4">
+        <div class="thumbnail">
+            <form>
+                <h3>{{ recipe.title }}</h3><br>
+                <h4>Description</h4>
+                <p>{{ recipe.description }}</p><br>
+                <h4>Ingredients</h4>
+                <ul>
+                    {% for ingredient in recipe.recipeingredient_set.all %}
+                    <li>{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+                <br>
+                <h4>Preparation Instructions</h4>
+                <p>
+                    {{ recipe.instructions }}
+                </p><br>
+                <h4>Tags</h4>
+                <ul>
+                    {% for tag in recipe.tags.all %}
+                    <li>{{ tag.tag_name }}</li>
+                    {% endfor %}
+                </ul>
+            </form>
+        </div>
     </div>
-  </div>
-  <!-- Recipe Information -->
+    <!-- Recipe Information -->
 
-  <!-- Ingredient/Nutrient Information -->
-  <div class="col-md-4">
-    <div class="thumbnail">
-      <form>
-        <h3>Nutrients in Recipe</h3>
-        <ul>
-          {% for ingredient in recipe.recipeingredient_set.all %}
-          <li>{{ ingredient }}</li>
-          {% endfor %}
-        </ul>
-      </form>
+    <!-- Ingredient/Nutrient Information -->
+    <div class="col-md-4">
+        <div class="thumbnail">
+            <form>
+                <h3>Nutrients in Recipe</h3>
+                {% for recipeingredient in recipe.recipeingredient_set.all %}
+                {{ recipeingredient.ingredient.name }} has (per 100g):
+                <ul>
+                    {% for ingredientnutrient in recipeingredient.ingredient.ingredientnutrient_set.all %}
+                    <li>{{ ingredientnutrient.amount }} {{ ingredientnutrient.nutrient.measured_in }}
+                        {{ ingredientnutrient.nutrient.name }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            </form>
+        </div>
     </div>
-  </div>
-  <!-- Ingredient/Nutrient Information -->
+    <!-- Ingredient/Nutrient Information -->
 
 </div>
 
 <!-- Favorite Recipe Button -->
 <div class="row">
-  <form>
-    <a class="btn btn-default" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
-  </form>
+    <form>
+        <a class="btn btn-default" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
+    </form>
 </div>
 <!-- Favorite Recipe Button -->
 
