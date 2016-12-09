@@ -39,7 +39,7 @@ class IngredientNutrient(models.Model):
         return str(recipe_id) + " " + str(nutrient_id) + " " + str(amount)
 
     class Meta:
-        unique_together = ('recipe_id', 'nutrient_id')
+        unique_together = ('ingredient_id', 'nutrient_id')
 
 
 class Ingredient(models.Model):
