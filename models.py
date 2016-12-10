@@ -82,7 +82,7 @@ class RecipeIngredient(models.Model):
 class Recipe(models.Model):
     title = models.CharField(max_length=512, blank=True, null=False)
     description = models.CharField(max_length=2048, blank=True, null=True)
-    instructions = models.CharField(max_length=2048, blank=True, null=True)
+    instructions = models.CharField(max_length=8092, blank=True, null=True)
     serves = models.IntegerField()
 
     def __str__(self):
@@ -93,7 +93,8 @@ class SavedSearch(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
     search_name = models.CharField(max_length=64, blank=True, null=False)
     recipe_search_term = models.CharField(max_length=100, blank=True, null=True)
-    ingredient_search_term = models.CharField(max_length=100, blank=True, null=True)
+    ingredient_search_term = models.CharField(max_length=100, blank=True,
+        null=True)
 
     def __str__(self):
         return self.search_name
@@ -154,7 +155,6 @@ class RecipeTag(models.Model):
         return str(self.recipe) + " has tag " + str(self.tag)
 
     class Meta:
-        unique_together = ('tag',
-        'recipe')
+        unique_together = ('tag', 'recipe')
 
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python
