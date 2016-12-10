@@ -38,9 +38,9 @@
                 </ul>
 
                 <!-- Search Button -->
-                <form action="{% url 'cookbook:search_recipes' %}" class="navbar-form navbar-left" role="search"
+                <form action="{% url 'cookbook:advanced_search' %}" class="navbar-form navbar-left" role="search"
                       method="GET">
-                    <i class="material-icons">search</i>{{ simple_search_form.search_term }}
+                    <i class="material-icons">search</i>{{ simple_search_form.recipe_name_search_term }}
                     <input type="submit" value="Submit" class="btn btn-default"/>
                 </form>
                 <!-- Search Button -->

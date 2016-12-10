@@ -38,16 +38,6 @@ def favorite(request, recipe_id):
         return detail(request, recipe_id, error_message=str(e))
 
 
-def recipe_search_results(request):
-    search_term = request.GET.get("search_term")
-    results = Recipe.objects.filter(title__contains=search_term)
-    template = loader.get_template('cookbook/search_results.html')
-    context = {'search_results': results}
-    add_common_context(context)
-
-    return HttpResponse(template.render(context, request))
-
-
 def advanced_recipe_search(request):
     template = loader.get_template('cookbook/advanced_search.html')
     context = {'advanced_search_form': AdvancedSearchForm()}
@@ -70,10 +60,12 @@ def advanced_recipe_search(request):
     if recipe_name_search_term or tags or food_groups or ingredient_name_search_term:
         search = create_saved_search(food_groups, ingredient_name_search_term,
             recipe_name_search_term, request, tags)
-        request.session["most_recent_search"] = {
+        params = {
             "ingredient_name_search_term": ingredient_name_search_term,
             "recipe_name_search_term": recipe_name_search_term, "tags": tags,
             "food_groups": food_groups}
+        request.session["most_recent_search"] = params
+        context['advanced_search_form'] = AdvancedSearchForm(initial=params)
 
         results = execute_saved_search(search)
         search.delete()

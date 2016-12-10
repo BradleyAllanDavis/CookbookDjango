@@ -4,7 +4,7 @@ from cookbook.models import FoodGroup, Tag
 
 
 class SimpleSearchForm(forms.Form):
-    search_term = forms.CharField(label="Search", max_length=100)
+    recipe_name_search_term = forms.CharField(label="Search", max_length=100)
 
 
 class AdvancedSearchForm(forms.Form):

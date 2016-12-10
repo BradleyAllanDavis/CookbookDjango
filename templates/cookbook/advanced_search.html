@@ -21,21 +21,22 @@
         </tr>
     </table>
 
-    <input type="submit" value="Submit" class="btn btn-primary"/>
+    <input type="submit" value="Search" class="btn btn-primary"/>
 </form>
 
 {% if search_results %}
+<form method="post" action="{% url 'cookbook:save_search' %}">
+    {% csrf_token %}
+    {{ save_search_form }}
+    <input type="submit" value="Save search" class="btn btn-primary"/>
+</form>
+
 <h1>Search results</h1>
 <ol>
     {% for recipe in search_results %}
     <li><a href="{% url 'cookbook:detail' recipe.id %}">{{ recipe.title }}</a></li>
     {% endfor %}
 </ol>
-<form method="post" action="{% url 'cookbook:save_search' %}">
-    {% csrf_token %}
-    {{ save_search_form }}
-    <input type="submit" value="Save search" class="btn btn-primary"/>
-</form>
 {% endif %}
 {% if no_matches %}
 No matching recipes.
