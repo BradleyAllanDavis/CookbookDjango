@@ -98,6 +98,12 @@ def save_search(request):
     return HttpResponseRedirect(reverse('cookbook:user_profile'))
 
 
+def delete_saved_search(request, saved_search_id):
+    saved_search = SavedSearch.objects.get(pk=saved_search_id)
+    saved_search.delete()
+    return HttpResponseRedirect(reverse('cookbook:user_profile'))
+
+
 def create_user_account(request):
     return render(request, 'cookbook/create_user_account.html')
 

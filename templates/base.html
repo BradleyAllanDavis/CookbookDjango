@@ -13,6 +13,8 @@
 
     <link href="{% static 'cookbook/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'cookbook/css/style.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 </head>
 
 <body>
@@ -39,7 +41,7 @@
                 <!-- Search Button -->
                 <form action="{% url 'cookbook:search_recipes' %}" class="navbar-form navbar-left" role="search"
                       method="GET">
-                    {{ simple_search_form.search_term }}
+                    <i class="material-icons">search</i>{{ simple_search_form.search_term }}
                     <input type="submit" value="Submit" class="btn btn-default"/>
                 </form>
                 <!-- Search Button -->
