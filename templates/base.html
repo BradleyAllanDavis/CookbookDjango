@@ -58,7 +58,7 @@
                                 <a href="{% if request.user %} {% url 'cookbook:user_profile' %} {% else %} {% url 'cookbook:login' %} {% endif %}">User
                                     Profile</a></li>
                             <li><a href="{% url 'cookbook:password_change' %}">Change Password</a></li>
-                            <li><a href="{% url 'cookbook:logout' %}">Log Out</a></li>
+                            <li><a href="{% url 'cookbook:logout' %}?next=/cookbook">Log Out</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -59,10 +59,10 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey('Recipe', models.CASCADE)
     ingredient = models.ForeignKey('Ingredient', models.CASCADE)
     amount = models.FloatField(null=False)
-    unit = models.ForeignKey('GramMapping', models.CASCADE)
+    gram_mapping = models.ForeignKey('GramMapping', models.CASCADE)
 
     def __str__(self):
-        return str(self.amount) + " " + str(self.unit) + " " + str(
+        return str(self.amount) + " " + str(self.gram_mapping) + " " + str(
             self.ingredient)
 
         # @classmethod
