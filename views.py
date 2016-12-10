@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -39,53 +40,52 @@ def favorite(request, recipe_id):
 
 
 def tag_search(request, tag):
-    return HttpResponseRedirect("/cookbook/advanced_search/?recipe_name_search_term=&ingredient_name_search_term=&tags="+tag)
+    return HttpResponseRedirect(
+        "/cookbook/advanced_search/?recipe_name_search_term=&ingredient_name_search_term=&tags=" + tag)
 
 
+@login_required
 def advanced_recipe_search(request):
     template = loader.get_template('cookbook/advanced_search.html')
     context = {'advanced_search_form': AdvancedSearchForm()}
     add_common_context(context)
 
-    if not request.user.id:
-        context["error_message"] = "Please log in first."
+    ingredient_name_search_term = request.GET.get("ingredient_name_search_term")
+    recipe_name_search_term = request.GET.get("recipe_name_search_term")
+
+    # need special handling for list-type parameters
+    parameter_dictionary = dict(request.GET)
+    if "tags" in parameter_dictionary:
+        tags = parameter_dictionary["tags"]
     else:
-        ingredient_name_search_term = request.GET.get("ingredient_name_search_term")
-        recipe_name_search_term = request.GET.get("recipe_name_search_term")
+        tags = []
+    if "food_groups" in parameter_dictionary:
+        food_groups = parameter_dictionary["food_groups"]
+    else:
+        food_groups = []
 
-        # need special handling for list-type parameters
-        parameter_dictionary = dict(request.GET)
-        if "tags" in parameter_dictionary:
-            tags = parameter_dictionary["tags"]
+    if recipe_name_search_term or tags or food_groups or ingredient_name_search_term:
+        search = create_saved_search(food_groups, ingredient_name_search_term,
+            recipe_name_search_term, request, tags)
+        params = {
+            "ingredient_name_search_term": ingredient_name_search_term,
+            "recipe_name_search_term": recipe_name_search_term, "tags": tags,
+            "food_groups": food_groups}
+        request.session["most_recent_search"] = params
+        context['advanced_search_form'] = AdvancedSearchForm(initial=params)
+
+        results = execute_saved_search(search)
+        search.delete()
+        print(results)
+
+        # need to pass extra parameter to distinguish between 0 results and
+        # didn't search yet
+        if results:
+            context["search_results"] = results
+            # add save search form if there are results
+            context["save_search_form"] = SaveSearchForm()
         else:
-            tags = []
-        if "food_groups" in parameter_dictionary:
-            food_groups = parameter_dictionary["food_groups"]
-        else:
-            food_groups = []
-
-        if recipe_name_search_term or tags or food_groups or ingredient_name_search_term:
-            search = create_saved_search(food_groups, ingredient_name_search_term,
-                recipe_name_search_term, request, tags)
-            params = {
-                "ingredient_name_search_term": ingredient_name_search_term,
-                "recipe_name_search_term": recipe_name_search_term, "tags": tags,
-                "food_groups": food_groups}
-            request.session["most_recent_search"] = params
-            context['advanced_search_form'] = AdvancedSearchForm(initial=params)
-
-            results = execute_saved_search(search)
-            search.delete()
-            print(results)
-
-            # need to pass extra parameter to distinguish between 0 results and
-            # didn't search yet
-            if results:
-                context["search_results"] = results
-                # add save search form if there are results
-                context["save_search_form"] = SaveSearchForm()
-            else:
-                context["no_matches"] = True
+            context["no_matches"] = True
 
     return HttpResponse(template.render(context, request))
 
