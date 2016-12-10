@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 
+{% if error_message %}
+<p style="color:red">{{ error_message }}</p>
+{% endif %}
+
 <form method="get" action="{% url 'cookbook:advanced_search' %}">
     <table>
         <tr>

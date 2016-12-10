@@ -47,42 +47,45 @@ def advanced_recipe_search(request):
     context = {'advanced_search_form': AdvancedSearchForm()}
     add_common_context(context)
 
-    ingredient_name_search_term = request.GET.get("ingredient_name_search_term")
-    recipe_name_search_term = request.GET.get("recipe_name_search_term")
-
-    # need special handling for list-type parameters
-    parameter_dictionary = dict(request.GET)
-    if "tags" in parameter_dictionary:
-        tags = parameter_dictionary["tags"]
+    if not request.user.id:
+        context["error_message"] = "Please log in first."
     else:
-        tags = []
-    if "food_groups" in parameter_dictionary:
-        food_groups = parameter_dictionary["food_groups"]
-    else:
-        food_groups = []
+        ingredient_name_search_term = request.GET.get("ingredient_name_search_term")
+        recipe_name_search_term = request.GET.get("recipe_name_search_term")
 
-    if recipe_name_search_term or tags or food_groups or ingredient_name_search_term:
-        search = create_saved_search(food_groups, ingredient_name_search_term,
-            recipe_name_search_term, request, tags)
-        params = {
-            "ingredient_name_search_term": ingredient_name_search_term,
-            "recipe_name_search_term": recipe_name_search_term, "tags": tags,
-            "food_groups": food_groups}
-        request.session["most_recent_search"] = params
-        context['advanced_search_form'] = AdvancedSearchForm(initial=params)
-
-        results = execute_saved_search(search)
-        search.delete()
-        print(results)
-
-        # need to pass extra parameter to distinguish between 0 results and
-        # didn't search yet
-        if results:
-            context["search_results"] = results
-            # add save search form if there are results
-            context["save_search_form"] = SaveSearchForm()
+        # need special handling for list-type parameters
+        parameter_dictionary = dict(request.GET)
+        if "tags" in parameter_dictionary:
+            tags = parameter_dictionary["tags"]
         else:
-            context["no_matches"] = True
+            tags = []
+        if "food_groups" in parameter_dictionary:
+            food_groups = parameter_dictionary["food_groups"]
+        else:
+            food_groups = []
+
+        if recipe_name_search_term or tags or food_groups or ingredient_name_search_term:
+            search = create_saved_search(food_groups, ingredient_name_search_term,
+                recipe_name_search_term, request, tags)
+            params = {
+                "ingredient_name_search_term": ingredient_name_search_term,
+                "recipe_name_search_term": recipe_name_search_term, "tags": tags,
+                "food_groups": food_groups}
+            request.session["most_recent_search"] = params
+            context['advanced_search_form'] = AdvancedSearchForm(initial=params)
+
+            results = execute_saved_search(search)
+            search.delete()
+            print(results)
+
+            # need to pass extra parameter to distinguish between 0 results and
+            # didn't search yet
+            if results:
+                context["search_results"] = results
+                # add save search form if there are results
+                context["save_search_form"] = SaveSearchForm()
+            else:
+                context["no_matches"] = True
 
     return HttpResponse(template.render(context, request))
 
