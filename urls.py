@@ -17,7 +17,7 @@ urlpatterns = [url(r'^$', views.index, name='index'),
     url('^', include('django.contrib.auth.urls')),
     url(r'^saved_search_detail/(?P<saved_search_id>[0-9]+)/delete/$',
         views.delete_saved_search, name="delete_saved_search"),
-    url(r'^tag_search/(?P<tag>[a-zA-Z\s]+)$', views.tag_search,
+    url(r'^tag_search/(?P<tag>.+)$', views.tag_search,
         name="tag_search"),
 ]
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python
