@@ -52,7 +52,7 @@ class Nutrient(models.Model):
     name = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.name + " (" + self.measured_in + ")"
+        return self.name + " (" + self.unit + ")"
 
 
 class RecipeIngredient(models.Model):
