@@ -41,7 +41,7 @@ class IngredientNutrient(models.Model):
 
 
 class Ingredient(models.Model):
-    ingredient_id = models.IntegerField(primary_key=True, blank=True)
+    id = models.IntegerField(primary_key=True, blank=True)
     food_group = models.ForeignKey(FoodGroup, models.SET_NULL, null=True)
     name = models.CharField(max_length=256)
 
@@ -50,8 +50,8 @@ class Ingredient(models.Model):
 
 
 class Nutrient(models.Model):
-    nutrient = models.IntegerField(primary_key=True, blank=True, )
-    measured_in = models.CharField(max_length=64, blank=True, null=True)
+    id = models.IntegerField(primary_key=True, blank=True, )
+    unit = models.CharField(max_length=64, blank=True, null=True)
     name = models.CharField(max_length=128)
 
     def __str__(self):
@@ -68,27 +68,25 @@ class RecipeIngredient(models.Model):
         return str(self.amount) + " " + str(self.unit) + " " + str(
             self.ingredient)
 
-    # @classmethod
-    # def check(self, **kwargs):
-    #     errors = super(RecipeIngredient, self).check(**kwargs)
-    #     passed = False
-    #     for unit in self.unit.all():
-    #         if unit.ingredient == self.ingredient:
-    #             passed = True;
-    #     if not passed:
-    #         errors.append(Error("Unit "+str(self.unit+" is not valid for this Ingredient",
-    #         "Pick a unit listed in the Ingredient record", obj=self,
-    #         id="cookbook.E001"))
-    #     return errors
+        # @classmethod
+        # def check(self, **kwargs):
+        #     errors = super(RecipeIngredient, self).check(**kwargs)
+        #     passed = False
+        #     for unit in self.unit.all():
+        #         if unit.ingredient == self.ingredient:
+        #             passed = True;
+        #     if not passed:
+        #         errors.append(Error("Unit "+str(self.unit+" is not valid for this Ingredient",
+        #         "Pick a unit listed in the Ingredient record", obj=self,
+        #         id="cookbook.E001"))
+        #     return errors
 
 
 class Recipe(models.Model):
+    id = models.IntegerField(primary_key=True, blank=True, )
     title = models.CharField(max_length=64, blank=True, null=False)
     description = models.CharField(max_length=2048, blank=True, null=True)
     instructions = models.CharField(max_length=2048, blank=True, null=True)
-    is_private = models.BooleanField(blank=True)
-    parent_recipe = models.ForeignKey('Recipe', null=True, blank=True)
-    tags = models.ManyToManyField('Tag', blank=True)
     serves = models.IntegerField()
 
     def __str__(self):
@@ -96,8 +94,8 @@ class Recipe(models.Model):
 
 
 class SavedSearch(models.Model):
-    search_name = models.CharField(max_length=64, blank=True, null=False)
     user = models.ForeignKey(User, models.CASCADE)
+    search_name = models.CharField(max_length=64, blank=True, null=False)
     recipe_search_term = models.CharField(max_length=100, blank=True, null=True)
     ingredient_search_term = models.CharField(max_length=100, blank=True,
         null=True)
@@ -151,5 +149,17 @@ class UserSubmission(models.Model):
 
     class Meta:
         unique_together = ('user', 'recipe')
+
+
+class RecipeTag(models.Model):
+    recipe = models.ForeignKey('Recipe', models.CASCADE)
+    tag = models.ForeignKey('Tag', models.CASCADE)
+
+    def __str__(self):
+        return str(self.tag) + " is a tag of " + str(self.recipe)
+
+    class Meta:
+        unique_together = ('tag',
+        'recipe')
 
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python
