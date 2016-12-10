@@ -34,7 +34,7 @@ def execute_saved_search(saved_search):
 
     results = Recipe.objects.raw(
         "SELECT * from cookbook_recipe WHERE cookbook_recipe.id IN (SELECT cookbook_recipetag.recipe_id FROM cookbook_recipetag WHERE cookbook_recipetag.tag_id IN (SELECT cookbook_searchtag.tag_id FROM cookbook_searchtag WHERE cookbook_searchtag.search_id = " + str(
-            saved_search.id) + " UNION SELECT cookbook_recipefoodgroups.recipe_id FROM cookbook_recipefoodgroups WHERE cookbook_recipefoodgroups.food_group_id IN (SELECT cookbook_searchfoodgroup.food_group_id FROM cookbook_searchfoodgroup WHERE cookbook_searchfoodgroup.search_id = " + str(
+            saved_search.id) + " UNION SELECT cookbook_recipefoodgroups.recipe_id::text FROM cookbook_recipefoodgroups WHERE cookbook_recipefoodgroups.food_group_id IN (SELECT cookbook_searchfoodgroup.food_group_id FROM cookbook_searchfoodgroup WHERE cookbook_searchfoodgroup.search_id = " + str(
             saved_search.id) + ")));")
     # force fetching results by looping, so we can safely delete the
     # temporary saved search object if needed
