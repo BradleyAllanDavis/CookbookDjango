@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
 
-from cookbook.forms import AdvancedSearchForm
+from cookbook.forms import AdvancedSearchForm, SaveSearchForm
 from cookbook.methods import *
 from cookbook.models import Recipe, UserFavorite, SavedSearch
 
@@ -74,6 +74,8 @@ def advanced_recipe_search(request):
         # didn't search yet
         if results:
             context["search_results"] = results
+            # add save search form if there are results
+            context["save_search_form"] = SaveSearchForm()
         else:
             context["no_matches"] = True
 
@@ -91,6 +93,7 @@ def save_search(request):
         food_groups = most_recent_search_dict["food_groups"]
         saved_search = create_saved_search(food_groups,
             ingredient_name_search_term, recipe_name_search_term, request, tags)
+        saved_search.search_name = request.POST.get("saved_search_name")
         saved_search.save()
     return HttpResponseRedirect(reverse('cookbook:user_profile'))
 

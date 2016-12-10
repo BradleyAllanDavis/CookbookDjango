@@ -31,7 +31,11 @@
     <li><a href="{% url 'cookbook:detail' recipe.id %}">{{ recipe.title }}</a></li>
     {% endfor %}
 </ol>
-<a class="btn btn-default" href="{% url 'cookbook:save_search' %}">Save search</a>
+<form method="post" action="{% url 'cookbook:save_search' %}">
+    {% csrf_token %}
+    {{ save_search_form }}
+    <input type="submit" value="Save search" class="btn btn-primary"/>
+</form>
 {% endif %}
 {% if no_matches %}
 No matching recipes.

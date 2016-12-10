@@ -16,3 +16,8 @@ class AdvancedSearchForm(forms.Form):
         required=False)
     food_groups = forms.ModelMultipleChoiceField(
         queryset=FoodGroup.objects.all(), required=False)
+
+
+class SaveSearchForm(forms.Form):
+    saved_search_name = forms.CharField(max_length=100, required=True,
+        label="Name for saved search")
