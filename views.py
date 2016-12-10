@@ -38,6 +38,10 @@ def favorite(request, recipe_id):
         return detail(request, recipe_id, error_message=str(e))
 
 
+def tag_search(request, tag):
+    return HttpResponseRedirect("/cookbook/advanced_search/?recipe_name_search_term=&ingredient_name_search_term=&tags="+tag)
+
+
 def advanced_recipe_search(request):
     template = loader.get_template('cookbook/advanced_search.html')
     context = {'advanced_search_form': AdvancedSearchForm()}
