@@ -11,7 +11,6 @@ from django.db import models
 
 
 class FoodGroup(models.Model):
-    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=64)
 
     def __str__(self):
@@ -41,7 +40,6 @@ class IngredientNutrient(models.Model):
 
 
 class Ingredient(models.Model):
-    id = models.IntegerField(primary_key=True, blank=True)
     food_group = models.ForeignKey(FoodGroup, models.SET_NULL, null=True)
     name = models.CharField(max_length=256)
 
@@ -50,7 +48,6 @@ class Ingredient(models.Model):
 
 
 class Nutrient(models.Model):
-    id = models.IntegerField(primary_key=True, blank=True, )
     unit = models.CharField(max_length=64, blank=True, null=True)
     name = models.CharField(max_length=128)
 
@@ -83,7 +80,6 @@ class RecipeIngredient(models.Model):
 
 
 class Recipe(models.Model):
-    id = models.IntegerField(primary_key=True, blank=True, )
     title = models.CharField(max_length=64, blank=True, null=False)
     description = models.CharField(max_length=2048, blank=True, null=True)
     instructions = models.CharField(max_length=2048, blank=True, null=True)
@@ -122,7 +118,7 @@ class SearchTag(models.Model):
 
 
 class Tag(models.Model):
-    tag_name = models.CharField(max_length=64, blank=True)
+    tag_name = models.CharField(primary_key=True, max_length=64, blank=True)
 
     def __str__(self):
         return self.tag_name
