@@ -8,31 +8,31 @@
 <div class="row">
 
     <!-- Recipe Information -->
-    <div class="col-md-4">
-        <div class="thumbnail">
-            <form>
-                <h3>{{ recipe.title }}</h3><br>
-                <h4>Description</h4>
-                <p>{{ recipe.description }}</p><br>
-                <h4>Ingredients</h4>
-                <ul>
-                    {% for ingredient in recipe.recipeingredient_set.all %}
-                    <li>{{ ingredient }}</li>
-                    {% endfor %}
-                </ul>
-                <br>
-                <h4>Preparation Instructions</h4>
-                <p>
-                    {{ recipe.instructions }}
-                </p><br>
-                <h4>Tags</h4>
-                <ul>
-                    {% for recipe_tag in recipe.recipetag_set.all %}
-                    <li>{{ recipe_tag.tag.tag_name }}</li>
-                    {% endfor %}
-                </ul>
-            </form>
-        </div>
+    <div class="col-md-8">
+        <form>
+            <h3>{{ recipe.title }}</h3><br>
+            <h4>Description</h4>
+            <p>{{ recipe.description }}</p><br>
+            <h4>Ingredients</h4>
+            <ul>
+                {% for ingredient in recipe.recipeingredient_set.all %}
+                <li>{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+            <br>
+            <h4>Preparation Instructions</h4>
+            <p>
+                {{ recipe.instructions }}
+            </p><br>
+            <h4>Tags</h4>
+            <ul>
+                {% for recipe_tag in recipe.recipetag_set.all %}
+                <button type="button">
+                    <a href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">{{ recipe_tag.tag.tag_name }}</a>
+                </button>
+                {% endfor %}
+            </ul>
+        </form>
     </div>
     <!-- Recipe Information -->
 
