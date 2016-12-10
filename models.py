@@ -80,7 +80,7 @@ class RecipeIngredient(models.Model):
 
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=64, blank=True, null=False)
+    title = models.CharField(max_length=512, blank=True, null=False)
     description = models.CharField(max_length=2048, blank=True, null=True)
     instructions = models.CharField(max_length=2048, blank=True, null=True)
     serves = models.IntegerField()
