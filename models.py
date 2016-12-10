@@ -97,8 +97,7 @@ class SavedSearch(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
     search_name = models.CharField(max_length=64, blank=True, null=False)
     recipe_search_term = models.CharField(max_length=100, blank=True, null=True)
-    ingredient_search_term = models.CharField(max_length=100, blank=True,
-        null=True)
+    ingredient_search_term = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.search_name
@@ -156,7 +155,7 @@ class RecipeTag(models.Model):
     tag = models.ForeignKey('Tag', models.CASCADE)
 
     def __str__(self):
-        return str(self.tag) + " is a tag of " + str(self.recipe)
+        return str(self.recipe) + " has tag " + str(self.tag)
 
     class Meta:
         unique_together = ('tag',
