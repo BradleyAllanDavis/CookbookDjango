@@ -21,8 +21,8 @@ def create_saved_search(food_groups, ingredient_name_search_term,
                 food_group=FoodGroup.objects.get(pk=food_group_id),
                 include=True).save()
     if tags:
-        for tag_id in tags:
-            SearchTag(search=saved_search, tag=Tag.objects.get(pk=tag_id),
+        for tag in tags:
+            SearchTag(search=saved_search, tag=Tag.objects.get(pk=tag),
                 include=True).save()
 
     return saved_search

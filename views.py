@@ -55,8 +55,17 @@ def advanced_recipe_search(request):
 
     ingredient_name_search_term = request.GET.get("ingredient_name_search_term")
     recipe_name_search_term = request.GET.get("recipe_name_search_term")
-    tags = request.GET.get("tags")
-    food_groups = request.GET.get("food_groups")
+
+    # need special handling for list-type parameters
+    parameter_dictionary = dict(request.GET)
+    if "tags" in parameter_dictionary:
+        tags = parameter_dictionary["tags"]
+    else:
+        tags = []
+    if "food_groups" in parameter_dictionary:
+        food_groups = parameter_dictionary["food_groups"]
+    else:
+        food_groups = []
 
     if recipe_name_search_term or tags or food_groups or ingredient_name_search_term:
         search = create_saved_search(food_groups, ingredient_name_search_term,
