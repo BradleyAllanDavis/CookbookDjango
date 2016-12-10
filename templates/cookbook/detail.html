@@ -45,7 +45,7 @@
                 {{ recipeingredient.ingredient.name }} has (per 100g):
                 <ul>
                     {% for ingredientnutrient in recipeingredient.ingredient.ingredientnutrient_set.all %}
-                    <li>{{ ingredientnutrient.amount }} {{ ingredientnutrient.nutrient.measured_in }}
+                    <li>{{ ingredientnutrient.amount }} {{ ingredientnutrient.nutrient.unit }}
                         {{ ingredientnutrient.nutrient.name }}
                     </li>
                     {% endfor %}
