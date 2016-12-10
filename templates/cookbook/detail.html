@@ -27,8 +27,8 @@
                 </p><br>
                 <h4>Tags</h4>
                 <ul>
-                    {% for tag in recipe.tags.all %}
-                    <li>{{ tag.tag_name }}</li>
+                    {% for recipe_tag in recipe.recipetag_set.all %}
+                    <li>{{ recipe_tag.tag.tag_name }}</li>
                     {% endfor %}
                 </ul>
             </form>

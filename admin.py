@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from cookbook.models import UserFavorite, UserSubmission, FoodGroup, \
     GramMapping, IngredientNutrient, Ingredient, Nutrient, RecipeIngredient, \
-    Recipe, SavedSearch, SearchFoodGroup, SearchTag, Tag
+    Recipe, SavedSearch, SearchFoodGroup, SearchTag, Tag, RecipeTag
 
 admin.site.register(UserFavorite)
 admin.site.register(UserSubmission)
@@ -19,3 +19,4 @@ admin.site.register(SavedSearch)
 admin.site.register(SearchFoodGroup)
 admin.site.register(SearchTag)
 admin.site.register(Tag)
+admin.site.register(RecipeTag)
