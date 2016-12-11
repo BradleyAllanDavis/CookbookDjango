@@ -34,7 +34,7 @@
     </p><br>
     <p>
       {% for recipe_tag in recipe.recipetag_set.all %}
-      <a class="tag tag-pill tag-default" href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">
+      <a class="tag tag-pill tag-info" href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">
         {{ recipe_tag.tag.tag_name }}</a>
       {% endfor %}
     </p>
