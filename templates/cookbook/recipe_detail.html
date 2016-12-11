@@ -21,17 +21,17 @@
       <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star-o" aria-hidden="true"></i></a>
       {% endif %}
     </h3>
-    <h6>Serves {{ recipe.serves }}</h6><br>
-    <h4>Description</h4>
+    <h6><small>Serves {{ recipe.serves }}</small></h6><br>
+    <h5>Description</h5>
     <p>{{ recipe.description }}</p><br>
-    <h4>Ingredients</h4>
+    <h5>Ingredients</h5>
     <ul>
       {% for ingredient in recipe.recipeingredient_set.all %}
       <li>{{ ingredient }}</li>
       {% endfor %}
     </ul>
     <br>
-    <h4>Preparation Instructions</h4>
+    <h5>Preparation Instructions</h5>
     <p>
       {{ recipe.instructions }}
     </p><br>

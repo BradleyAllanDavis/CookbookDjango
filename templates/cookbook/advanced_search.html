@@ -8,7 +8,7 @@
 <div class="row">
 
   <!-- Search form -->
-  <div class="col-md-3">
+  <div class="col-md-4">
     <form method="get" action="{% url 'cookbook:advanced_search' %}">
       <h6>{{ advanced_search_form.recipe_name_search_term.label_tag }}</h6>
       <table>
@@ -40,16 +40,16 @@
   <!-- Search form -->
 
   <!-- Search results -->
-  <div class="col-md-9">
+  <div class="col-md-8">
     {% if search_results %}
     <form method="post" action="{% url 'cookbook:save_search' %}">
       {% csrf_token %}
-      {{ save_search_form }}
+      {{ save_search_form }}<br>
       <input type="submit" value="Save search" class="btn btn-primary"/>
-    </form>
+    </form><br>
 
-    <h1>Search results</h1>
-    <ul>
+    <h3>Search results</h3>
+    <ul class="list-unstyled">
       {% for recipe in search_results %}
       <li><a href="{% url 'cookbook:recipe_detail' recipe.id %}">{{ recipe.title }}</a></li>
       {% endfor %}
