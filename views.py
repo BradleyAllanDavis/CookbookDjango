@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -19,15 +20,26 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def detail(request, recipe_id, error_message=None):
+def recipe_detail(request, recipe_id, error_message=None):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
+    recipe.instructions = recipe.instructions.replace("@newline@", "\n")
     context = {'recipe': recipe, 'error_message': error_message}
+    if request.user.id:
+        context["show_favorite_star"] = True
+    try:
+        UserFavorite.objects.get(user=request.user, recipe=recipe)
+        context["favorite_star_filled"] = True
+    except ObjectDoesNotExist:
+        context["favorite_star_filled"] = False
+
     add_common_context(context)
 
     return HttpResponse(
-        loader.get_template('cookbook/detail.html').render(context, request))
+        loader.get_template('cookbook/recipe_detail.html').render(context,
+            request))
 
 
+@login_required
 def favorite(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     user_favorite = UserFavorite(user=request.user, recipe=recipe)
@@ -36,7 +48,7 @@ def favorite(request, recipe_id):
         print("user " + str(request.user) + " favorited recipe " + str(recipe))
         return HttpResponseRedirect(reverse('cookbook:user_profile'))
     except IntegrityError as e:
-        return detail(request, recipe_id, error_message=str(e))
+        return recipe_detail(request, recipe_id, error_message=str(e))
 
 
 def tag_search(request, tag):

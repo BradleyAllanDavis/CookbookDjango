@@ -9,7 +9,7 @@
         <div class="card-block">
             <h4 class="card-title">{{ recipe.title }}</h4>
             <p class="card-text">{{recipe.description}}</p>
-            <a class="btn btn-primary" href="{% url 'cookbook:detail' recipe.id %}">View Recipe</a>
+            <a class="btn btn-primary" href="{% url 'cookbook:recipe_detail' recipe.id %}">View Recipe</a>
         </div>
     </div>
 

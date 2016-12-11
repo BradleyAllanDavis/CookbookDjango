@@ -2,14 +2,22 @@
 {% block content %}
 
 {% if error_message %}
-<p style="color:red">{{ error_message }}</p>
+<div class="alert alert-danger" role="alert">
+    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+    {{ error_message }}
+</div>
 {% endif %}
 
 <div class="row">
 
-  <!-- Recipe Information -->
+    <!-- Recipe Information -->
     <div class="col-md-8">
-        <h3>{{ recipe.title }}</h3><br>
+        <h3>{{ recipe.title }}
+            {% if favorite_star_filled %}
+            <i class="fa fa-star" aria-hidden="true"></i>
+            {% elif show_favorite_star %}
+            <i class="fa fa-star-o" aria-hidden="true"></i>
+            {% endif %}</h3><br>
         <h4>Description</h4>
         <p>{{ recipe.description }}</p><br>
         <h4>Ingredients</h4>
@@ -41,22 +49,23 @@
                 {{ recipeingredient.ingredient.name }} has (per 100g):
                 <ul>
                     {% for ingredientnutrient in recipeingredient.ingredient.ingredientnutrient_set.all %}
+                    {% if ingredientnutrient.nutrient.id <= 205 or ingredientnutrient.nutrient.id == 291 or ingredientnutrient.nutrient.id == 208 %}
                     <li>{{ ingredientnutrient.amount }} {{ ingredientnutrient.nutrient.unit }}
-                        {{ ingredientnutrient.nutrient.name }}
-                    </li>
+                        {{ ingredientnutrient.nutrient.name }}  </li>
+                    {% endif %}
                     {% endfor %}
                 </ul>
                 {% endfor %}
             </div>
         </div>
     </div>
-  <!-- Ingredient/Nutrient Information -->
+    <!-- Ingredient/Nutrient Information -->
 
 </div>
 
 <!-- Favorite Recipe Button -->
 <div class="row">
-        <a class="btn btn-secondary" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
+    <a class="btn btn-secondary" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
 </div>
 <!-- Favorite Recipe Button -->
 
