@@ -42,13 +42,16 @@ def recipe_detail(request, recipe_id, error_message=None):
 @login_required
 def favorite(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    user_favorite = UserFavorite(user=request.user, recipe=recipe)
     try:
+        user_favorite = UserFavorite.objects.get(user=request.user,
+            recipe=recipe)
+        user_favorite.delete()
+    except UserFavorite.DoesNotExist:
+        user_favorite = UserFavorite(user=request.user, recipe=recipe)
         user_favorite.save()
-        print("user " + str(request.user) + " favorited recipe " + str(recipe))
-        return HttpResponseRedirect(reverse('cookbook:user_profile'))
-    except IntegrityError as e:
-        return recipe_detail(request, recipe_id, error_message=str(e))
+
+    return HttpResponseRedirect(reverse('cookbook:recipe_detail', kwargs={
+        "recipe_id":recipe_id}))
 
 
 def tag_search(request, tag):

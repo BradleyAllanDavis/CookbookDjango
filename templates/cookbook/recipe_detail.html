@@ -14,9 +14,9 @@
     <div class="col-md-8">
         <h3>{{ recipe.title }}
             {% if favorite_star_filled %}
-            <i class="fa fa-star" aria-hidden="true"></i>
+            <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star" aria-hidden="true"></i></a>
             {% elif show_favorite_star %}
-            <i class="fa fa-star-o" aria-hidden="true"></i>
+            <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star-o" aria-hidden="true"></i></a>
             {% endif %}</h3><br>
         <h4>Description</h4>
         <p>{{ recipe.description }}</p><br>
@@ -63,10 +63,5 @@
 
 </div>
 
-<!-- Favorite Recipe Button -->
-<div class="row">
-    <a class="btn btn-secondary" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
-</div>
-<!-- Favorite Recipe Button -->
 
 {% endblock %}
