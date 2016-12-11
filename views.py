@@ -16,7 +16,7 @@ from cookbook.models import Recipe, UserFavorite, SavedSearch, \
 
 
 def index(request):
-    recipe_list = Recipe.objects.order_by('?')[:9]
+    recipe_list = Recipe.objects.order_by('?')[:20]
     template = loader.get_template('cookbook/index.html')
     context = {'recipe_list': recipe_list}
     add_common_context(context)
