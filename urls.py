@@ -19,5 +19,7 @@ urlpatterns = [url(r'^$', views.index, name='index'),
         views.delete_saved_search, name="delete_saved_search"),
     url(r'^tag_search/(?P<tag>.+)$', views.tag_search,
         name="tag_search"),
+    url(r'^change_preferences/$', views.change_preferences,
+        name='change_preferences')
 ]
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python
