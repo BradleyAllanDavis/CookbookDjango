@@ -4,6 +4,7 @@
 
 <!-- Recipe Thumbnails -->
 {% if recipe_list %}
+<<<<<<< HEAD
 <div class="card-columns">
   {% for recipe in recipe_list %}
   <div class="card">
@@ -11,6 +12,16 @@
       <h4 class="card-title">{{ recipe.title }}</h4>
       <p class="card-text">{{recipe.description}}</p>
       <a class="btn btn-secondary" href="{% url 'cookbook:detail' recipe.id %}">View Recipe</a>
+=======
+{% for recipe in recipe_list %}
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-block">
+            <h4 class="card-title">{{ recipe.title }}</h4>
+            <p class="card-text">{{recipe.description}}</p>
+            <a class="btn btn-primary" href="{% url 'cookbook:recipe_detail' recipe.id %}">View Recipe</a>
+        </div>
+>>>>>>> 039b62c41dcee0d578e69b8ae4284ed378bc6cd1
     </div>
   </div>
   {% endfor %}

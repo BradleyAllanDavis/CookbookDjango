@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if error_message %}
+<div class="alert alert-danger" role="alert">
+    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+    {{ error_message }}
+</div>
+{% endif %}
+
+<<<<<<< HEAD:templates/cookbook/detail.html
+<!-- Recipe Information -->
+<div class="col-md-8">
+  <h3>{{ recipe.title }}</h3><br>
+  <h4>Description</h4>
+  <p>{{ recipe.description }}</p><br>
+  <h4>Ingredients</h4>
+  <ul>
+    {% for ingredient in recipe.recipeingredient_set.all %}
+    <li>{{ ingredient }}</li>
+    {% endfor %}
+  </ul>
+  <br>
+  <h4>Preparation Instructions</h4>
+  <p>
+    {{ recipe.instructions }}
+  </p><br>
+  <p>
+    {% for recipe_tag in recipe.recipetag_set.all %}
+    <a class="tag tag-pill tag-default" href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">
+      {{ recipe_tag.tag.tag_name }}</a>
+    {% endfor %}
+  </p>
+</div>
+<!-- Recipe Information -->
+
+<!-- Ingredient/Nutrient Information -->
+<div class="col-md-4">
+  <div class="card">
+    <div class="card-block">
+      <h3 class="card-title">Nutrients in Recipe</h3>
+      {% for recipeingredient in recipe.recipeingredient_set.all %}
+      {{ recipeingredient.ingredient.name }} has (per 100g):
+      <ul>
+        {% for ingredientnutrient in recipeingredient.ingredient.ingredientnutrient_set.all %}
+        <li>{{ ingredientnutrient.amount }} {{ ingredientnutrient.nutrient.unit }}
+          {{ ingredientnutrient.nutrient.name }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+    </div>
+  </div>
+=======
+<div class="row">
+
+    <!-- Recipe Information -->
+    <div class="col-lg-7">
+        <h3>{{ recipe.title }}
+            {% if favorite_star_filled %}
+            <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star" aria-hidden="true"></i></a>
+            {% elif show_favorite_star %}
+            <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star-o" aria-hidden="true"></i></a>
+            {% endif %}</h3><br>
+        <h4>Description</h4>
+        <p>{{ recipe.description }}</p><br>
+        <h4>Ingredients</h4>
+        <ul>
+            {% for ingredient in recipe.recipeingredient_set.all %}
+            <li>{{ ingredient }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <h4>Preparation Instructions</h4>
+        <p>
+            {{ recipe.instructions }}
+        </p><br>
+        <p>
+            {% for recipe_tag in recipe.recipetag_set.all %}
+            <a class="tag tag-pill tag-info" href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">
+                {{ recipe_tag.tag.tag_name }}</a>
+            {% endfor %}
+        </p>
+    </div>
+    <!-- Recipe Information -->
+
+    <!-- Ingredient/Nutrient Information -->
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-block">
+                <h3 class="card-title">Nutritional information per serving</h3>
+                <ul>
+                    {% for nutrient_id, nutrient in nutrients.items %}
+                    <li>{{nutrient.amount}} {{nutrient.unit}} {{nutrient.name}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Ingredient/Nutrient Information -->
+
+>>>>>>> 039b62c41dcee0d578e69b8ae4284ed378bc6cd1:templates/cookbook/recipe_detail.html
+</div>
+<!-- Ingredient/Nutrient Information -->
+
+
+<<<<<<< HEAD:templates/cookbook/detail.html
+<!-- Favorite Recipe Button -->
+<div class="row">
+  <a class="btn btn-secondary" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
+</div>
+<!-- Favorite Recipe Button -->
+=======
+>>>>>>> 039b62c41dcee0d578e69b8ae4284ed378bc6cd1:templates/cookbook/recipe_detail.html
+
+{% endblock %}

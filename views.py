@@ -1,14 +1,16 @@
 from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
 
-from cookbook.forms import AdvancedSearchForm, SaveSearchForm
+from cookbook.forms import AdvancedSearchForm, SaveSearchForm, \
+    NutritionPreferenceForm
 from cookbook.methods import *
-from cookbook.models import Recipe, UserFavorite, SavedSearch
+from cookbook.models import Recipe, UserFavorite, SavedSearch, \
+    NutritionPreference, Nutrient
 
 
 def index(request):
@@ -19,24 +21,55 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def detail(request, recipe_id, error_message=None):
+def recipe_detail(request, recipe_id, error_message=None):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
+    recipe.instructions = recipe.instructions.replace("@newline@", "\n")
     context = {'recipe': recipe, 'error_message': error_message}
+
+    # add favorite star
+    if request.user.id:
+        context["show_favorite_star"] = True
+    try:
+        UserFavorite.objects.get(user=request.user, recipe=recipe)
+        context["favorite_star_filled"] = True
+    except ObjectDoesNotExist:
+        context["favorite_star_filled"] = False
+
+    nutrients = {}
+    context["nutrients"] = nutrients
+    # add nutrition info
+    for ri in recipe.recipeingredient_set.all():
+        for nutritionpreference in request.user.nutritionpreference_set.all():
+            nutrient = nutritionpreference.nutrient
+            inn = ri.ingredient.ingredientnutrient_set.get(nutrient=nutrient)
+            nid = inn.nutrient.id
+            if str(nid) not in nutrients:
+                nutrients[str(nid)] = {
+                    'name': nutrient.name, 'unit': nutrient.unit,
+                    'amount': 0}
+            amount_per_recipe = inn.amount / 100 * ri.amount * ri.gram_mapping.amount_grams
+            amount_per_serving = amount_per_recipe / recipe.serves
+            nutrients[str(nid)]['amount'] += amount_per_serving
+
+    # add other context
     add_common_context(context)
+    template = loader.get_template('cookbook/recipe_detail.html')
+    return HttpResponse(template.render(context, request))
 
-    return HttpResponse(
-        loader.get_template('cookbook/detail.html').render(context, request))
 
-
+@login_required
 def favorite(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    user_favorite = UserFavorite(user=request.user, recipe=recipe)
     try:
+        user_favorite = UserFavorite.objects.get(user=request.user,
+            recipe=recipe)
+        user_favorite.delete()
+    except UserFavorite.DoesNotExist:
+        user_favorite = UserFavorite(user=request.user, recipe=recipe)
         user_favorite.save()
-        print("user " + str(request.user) + " favorited recipe " + str(recipe))
-        return HttpResponseRedirect(reverse('cookbook:user_profile'))
-    except IntegrityError as e:
-        return detail(request, recipe_id, error_message=str(e))
+
+    args = {"recipe_id": recipe_id}
+    return HttpResponseRedirect(reverse('cookbook:recipe_detail', kwargs=args))
 
 
 def tag_search(request, tag):
@@ -106,6 +139,26 @@ def save_search(request):
     return HttpResponseRedirect(reverse('cookbook:user_profile'))
 
 
+def change_preferences(request):
+    if request.method == 'POST':
+        # delete existing preferences
+        for pref in NutritionPreference.objects.filter(user=request.user):
+            pref.delete()
+
+        nutrients = dict(request.POST)["nutrients"]
+        for nutrient_id in nutrients:
+            nutrient = Nutrient.objects.get(pk=nutrient_id)
+            preference = NutritionPreference(user=request.user,
+                nutrient=nutrient)
+            preference.save()
+        return HttpResponseRedirect(reverse('cookbook:index'))
+    else:
+        params = {"nutrients": request.user.nutritionpreference_set.all()}
+        form = NutritionPreferenceForm(initial=params)
+        context = {"nutrition_preference_form": form}
+        return render(request, 'cookbook/change_preferences.html', context)
+
+
 def delete_saved_search(request, saved_search_id):
     saved_search = SavedSearch.objects.get(pk=saved_search_id)
     saved_search.delete()
@@ -122,11 +175,6 @@ def saved_search_detail(request, saved_search_id):
     add_common_context(context)
     template = loader.get_template("cookbook/saved_search_detail.html")
     return HttpResponse(template.render(context, request))
-
-
-def add_common_context(other_context):
-    other_context['simple_search_form'] = SimpleSearchForm()
-    return other_context
 
 
 def user_profile(request):

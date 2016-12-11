@@ -39,8 +39,8 @@ def execute_saved_search(saved_search):
     # force fetching results by looping, so we can safely delete the
     # temporary saved search object if needed
     recipes = []
-    for recipe in results:
-        recipes.append(recipe)
+    for i in range(min(len(list(results)), 50)):
+        recipes.append(results[i])
     results = recipes
     print("Result set length is " + str(len(results)))
     if len(results) == 0:

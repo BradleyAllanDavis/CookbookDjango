@@ -157,4 +157,16 @@ class RecipeTag(models.Model):
     class Meta:
         unique_together = ('tag', 'recipe')
 
+
+class NutritionPreference(models.Model):
+    user = models.ForeignKey(User, models.CASCADE)
+    nutrient = models.ForeignKey('Nutrient', models.CASCADE)
+
+    def __str__(self):
+        return str(self.user) + " is interested in " + str(self.nutrient)
+
+    class Meta:
+        unique_together = ('user', 'nutrient')
+
+
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python

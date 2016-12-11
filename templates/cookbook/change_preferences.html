@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="bd-title">Change preferences</h1>
+
+<form method="post" action="{% url 'cookbook:change_preferences' %}">
+    {% csrf_token %}
+    {{ nutrition_preference_form }}
+    <input type="submit" value="Save" class="btn btn-primary"/>
+</form>
+
+
+{% endblock content %}

@@ -1,6 +1,6 @@
 from django import forms
 
-from cookbook.models import FoodGroup, Tag
+from cookbook.models import FoodGroup, Tag, Nutrient
 
 
 class SimpleSearchForm(forms.Form):
@@ -21,3 +21,10 @@ class AdvancedSearchForm(forms.Form):
 class SaveSearchForm(forms.Form):
     saved_search_name = forms.CharField(max_length=100, required=True,
         label="Name for saved search")
+
+
+class NutritionPreferenceForm(forms.Form):
+    nutrients = forms.ModelMultipleChoiceField(queryset=Nutrient.objects.all(),
+        required=True)
+
+

@@ -38,7 +38,7 @@
 <h1>Search results</h1>
 <ol>
     {% for recipe in search_results %}
-    <li><a href="{% url 'cookbook:detail' recipe.id %}">{{ recipe.title }}</a></li>
+    <li><a href="{% url 'cookbook:recipe_detail' recipe.id %}">{{ recipe.title }}</a></li>
     {% endfor %}
 </ol>
 {% endif %}

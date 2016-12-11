@@ -12,7 +12,7 @@
             {% if user.userfavorite_set %}
             {% for recipe_relation in user.userfavorite_set.all %}
             <a class="list-group-item list-group-item-action"
-               href="{% url 'cookbook:detail' recipe_relation.recipe.id %}">
+               href="{% url 'cookbook:recipe_detail' recipe_relation.recipe.id %}">
                 <h5 class="list-group-item-heading">{{ recipe_relation.recipe }}</h5>
                 <p>{{ recipe_relation.recipe.description }}</p>
             </a>
