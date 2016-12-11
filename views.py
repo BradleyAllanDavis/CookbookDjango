@@ -28,34 +28,33 @@ def recipe_detail(request, recipe_id, error_message=None):
     recipe.instructions = recipe.instructions.replace("@newline@", "\n")
     context = {'recipe': recipe, 'error_message': error_message}
 
-    # add favorite star
     if request.user.id:
         context["show_favorite_star"] = True
-    try:
-        UserFavorite.objects.get(user=request.user, recipe=recipe)
-        context["favorite_star_filled"] = True
-    except ObjectDoesNotExist:
-        context["favorite_star_filled"] = False
+        try:
+            UserFavorite.objects.get(user=request.user, recipe=recipe)
+            context["favorite_star_filled"] = True
+        except ObjectDoesNotExist:
+            context["favorite_star_filled"] = False
 
-    nutrients = {}
-    context["nutrients"] = nutrients
-    # add nutrition info
-    for ri in recipe.recipeingredient_set.all():
-        for nutritionpreference in request.user.nutritionpreference_set.all():
-            nutrient = nutritionpreference.nutrient
-            try:
-                inn = ri.ingredient.ingredientnutrient_set.get(
-                    nutrient=nutrient)
-                nid = inn.nutrient.id
-                if str(nid) not in nutrients:
-                    nutrients[str(nid)] = {
-                        'name': nutrient.name, 'unit': nutrient.unit,
-                        'amount': 0}
-                amount_per_recipe = inn.amount / 100 * ri.amount * ri.gram_mapping.amount_grams
-                amount_per_serving = amount_per_recipe / recipe.serves
-                nutrients[str(nid)]['amount'] += amount_per_serving
-            except IngredientNutrient.DoesNotExist:
-                pass
+        nutrients = {}
+        context["nutrients"] = nutrients
+        # add nutrition info
+        for ri in recipe.recipeingredient_set.all():
+            for nutritionpreference in request.user.nutritionpreference_set.all():
+                nutrient = nutritionpreference.nutrient
+                try:
+                    inn = ri.ingredient.ingredientnutrient_set.get(
+                        nutrient=nutrient)
+                    nid = inn.nutrient.id
+                    if str(nid) not in nutrients:
+                        nutrients[str(nid)] = {
+                            'name': nutrient.name, 'unit': nutrient.unit,
+                            'amount': 0}
+                    amount_per_recipe = inn.amount / 100 * ri.amount * ri.gram_mapping.amount_grams
+                    amount_per_serving = amount_per_recipe / recipe.serves
+                    nutrients[str(nid)]['amount'] += amount_per_serving
+                except IngredientNutrient.DoesNotExist:
+                    pass
 
     # add other context
     add_common_context(context)
