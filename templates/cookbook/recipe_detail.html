@@ -11,7 +11,7 @@
 <div class="row">
 
     <!-- Recipe Information -->
-    <div class="col-md-8">
+    <div class="col-lg-7">
         <h3>{{ recipe.title }}
             {% if favorite_star_filled %}
             <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star" aria-hidden="true"></i></a>
@@ -41,21 +41,15 @@
     <!-- Recipe Information -->
 
     <!-- Ingredient/Nutrient Information -->
-    <div class="col-md-4">
+    <div class="col-lg-5">
         <div class="card">
             <div class="card-block">
-                <h3 class="card-title">Nutrients in Recipe</h3>
-                {% for recipeingredient in recipe.recipeingredient_set.all %}
-                {{ recipeingredient.ingredient.name }} has (per 100g):
+                <h3 class="card-title">Nutritional information per serving</h3>
                 <ul>
-                    {% for ingredientnutrient in recipeingredient.ingredient.ingredientnutrient_set.all %}
-                    {% if ingredientnutrient.nutrient.id <= 205 or ingredientnutrient.nutrient.id == 291 or ingredientnutrient.nutrient.id == 208 %}
-                    <li>{{ ingredientnutrient.amount }} {{ ingredientnutrient.nutrient.unit }}
-                        {{ ingredientnutrient.nutrient.name }}  </li>
-                    {% endif %}
+                    {% for nutrient_id, nutrient in nutrients.items %}
+                    <li>{{nutrient.amount}} {{nutrient.unit}} {{nutrient.name}}</li>
                     {% endfor %}
                 </ul>
-                {% endfor %}
             </div>
         </div>
     </div>

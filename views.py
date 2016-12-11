@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -24,6 +23,8 @@ def recipe_detail(request, recipe_id, error_message=None):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     recipe.instructions = recipe.instructions.replace("@newline@", "\n")
     context = {'recipe': recipe, 'error_message': error_message}
+
+    # add favorite star
     if request.user.id:
         context["show_favorite_star"] = True
     try:
@@ -32,11 +33,25 @@ def recipe_detail(request, recipe_id, error_message=None):
     except ObjectDoesNotExist:
         context["favorite_star_filled"] = False
 
-    add_common_context(context)
+    nutrients = {}
+    context["nutrients"] = nutrients
+    # add nutrition info
+    for ri in recipe.recipeingredient_set.all():
+        for inn in ri.ingredient.ingredientnutrient_set.all():
+            nid = inn.nutrient.id
+            if nid <= 205 or nid == 291 or nid == 208:
+                if str(nid) not in nutrients:
+                    nutrients[str(nid)] = {
+                        'name': inn.nutrient.name, 'unit': inn.nutrient.unit,
+                        'amount': 0}
+                amount_per_recipe = inn.amount / 100 * ri.amount * ri.gram_mapping.amount_grams
+                amount_per_serving = amount_per_recipe / recipe.serves
+                nutrients[str(nid)]['amount'] += amount_per_serving
 
-    return HttpResponse(
-        loader.get_template('cookbook/recipe_detail.html').render(context,
-            request))
+    # add other context
+    add_common_context(context)
+    template = loader.get_template('cookbook/recipe_detail.html')
+    return HttpResponse(template.render(context, request))
 
 
 @login_required
@@ -50,8 +65,8 @@ def favorite(request, recipe_id):
         user_favorite = UserFavorite(user=request.user, recipe=recipe)
         user_favorite.save()
 
-    return HttpResponseRedirect(reverse('cookbook:recipe_detail', kwargs={
-        "recipe_id":recipe_id}))
+    args = {"recipe_id": recipe_id}
+    return HttpResponseRedirect(reverse('cookbook:recipe_detail', kwargs=args))
 
 
 def tag_search(request, tag):
