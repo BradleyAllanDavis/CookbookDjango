@@ -22,13 +22,14 @@ class SimpleSearchForm(CookbookForm):
 
 class AdvancedSearchForm(CookbookForm):
     recipe_name_search_term = forms.CharField(max_length=100, required=False,
-        label='Recipe name should contain')
+        label='Recipe name contains')
     ingredient_name_search_term = forms.CharField(
-        label="Ingredients should contain", max_length=100, required=False)
+        label="and ingredient names contain", max_length=100, required=False)
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
-        required=False)
+        required=False, label="and tags contains all of")
     food_groups = forms.ModelMultipleChoiceField(
-        queryset=FoodGroup.objects.all(), required=False)
+        queryset=FoodGroup.objects.all(), required=False,
+        label="and food groups contain all of")
 
 
 class SaveSearchForm(CookbookForm):
@@ -48,8 +49,3 @@ class NutritionPreferenceForm(CookbookForm):
             prefix, initial, error_class, label_suffix, empty_permitted,
             field_order, use_required_attribute)
         self.fields['nutrients'].widget.attrs['size'] = '20'
-        self.fields['nutrients'].widget.attrs['class'] = "form-control"
-
-
-
-

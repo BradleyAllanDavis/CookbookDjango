@@ -153,7 +153,7 @@ def change_preferences(request):
             preference.save()
         return HttpResponseRedirect(reverse('cookbook:index'))
     else:
-        params = {"nutrients": request.user.nutritionpreference_set.all()}
+        params = {"nutrients": [nutrientpref.nutrient.id for nutrientpref in request.user.nutritionpreference_set.all()]}
         form = NutritionPreferenceForm(initial=params)
         context = {"nutrition_preference_form": form}
         return render(request, 'cookbook/change_preferences.html', context)
