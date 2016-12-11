@@ -49,3 +49,10 @@ class NutritionPreferenceForm(CookbookForm):
             prefix, initial, error_class, label_suffix, empty_permitted,
             field_order, use_required_attribute)
         self.fields['nutrients'].widget.attrs['size'] = '20'
+
+
+class CreateUserForm(CookbookForm):
+    username = forms.CharField(max_length=100, required=True)
+    email = forms.CharField(max_length=100, required=False)
+    password = forms.CharField(widget=forms.PasswordInput(), required=True)
+

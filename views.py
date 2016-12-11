@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -7,10 +9,10 @@ from django.template import loader
 from django.urls import reverse
 
 from cookbook.forms import AdvancedSearchForm, SaveSearchForm, \
-    NutritionPreferenceForm
+    NutritionPreferenceForm, CreateUserForm
 from cookbook.methods import *
 from cookbook.models import Recipe, UserFavorite, SavedSearch, \
-    NutritionPreference, Nutrient
+    NutritionPreference, Nutrient, IngredientNutrient
 
 
 def index(request):
@@ -41,15 +43,19 @@ def recipe_detail(request, recipe_id, error_message=None):
     for ri in recipe.recipeingredient_set.all():
         for nutritionpreference in request.user.nutritionpreference_set.all():
             nutrient = nutritionpreference.nutrient
-            inn = ri.ingredient.ingredientnutrient_set.get(nutrient=nutrient)
-            nid = inn.nutrient.id
-            if str(nid) not in nutrients:
-                nutrients[str(nid)] = {
-                    'name': nutrient.name, 'unit': nutrient.unit,
-                    'amount': 0}
-            amount_per_recipe = inn.amount / 100 * ri.amount * ri.gram_mapping.amount_grams
-            amount_per_serving = amount_per_recipe / recipe.serves
-            nutrients[str(nid)]['amount'] += amount_per_serving
+            try:
+                inn = ri.ingredient.ingredientnutrient_set.get(
+                    nutrient=nutrient)
+                nid = inn.nutrient.id
+                if str(nid) not in nutrients:
+                    nutrients[str(nid)] = {
+                        'name': nutrient.name, 'unit': nutrient.unit,
+                        'amount': 0}
+                amount_per_recipe = inn.amount / 100 * ri.amount * ri.gram_mapping.amount_grams
+                amount_per_serving = amount_per_recipe / recipe.serves
+                nutrients[str(nid)]['amount'] += amount_per_serving
+            except IngredientNutrient.DoesNotExist:
+                pass
 
     # add other context
     add_common_context(context)
@@ -153,7 +159,9 @@ def change_preferences(request):
             preference.save()
         return HttpResponseRedirect(reverse('cookbook:index'))
     else:
-        params = {"nutrients": [nutrientpref.nutrient.id for nutrientpref in request.user.nutritionpreference_set.all()]}
+        params = {
+            "nutrients": [nutrientpref.nutrient.id for nutrientpref in
+                request.user.nutritionpreference_set.all()]}
         form = NutritionPreferenceForm(initial=params)
         context = {"nutrition_preference_form": form}
         add_common_context(context)
@@ -167,7 +175,17 @@ def delete_saved_search(request, saved_search_id):
 
 
 def create_user_account(request):
-    return render(request, 'cookbook/create_user_account.html')
+    if request.method == 'POST':
+        try:
+            User.objects.create_user(request.POST.get("username"),
+                request.POST.get("email"), request.POST.get("password"))
+            return HttpResponseRedirect(reverse('cookbook:login'))
+        except IntegrityError:
+            return HttpResponseRedirect(reverse("cookbook:username_exists"))
+    else:
+        context = {"create_user_form": CreateUserForm()}
+        add_common_context(context)
+        return render(request, 'cookbook/create_user_account.html', context)
 
 
 def saved_search_detail(request, saved_search_id):

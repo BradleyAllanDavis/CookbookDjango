@@ -1,28 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="col-md-4 col-centered">
-	<form role="form">
-		<div class="form-group">
-			<label for="exampleInputEmail1">First Name:</label>
-			<input type="email" class="form-control" id="exampleInputEmail1"/>
-		</div>
-		<div class="form-group">
-			<label for="exampleInputPassword1">Last Name:</label>
-			<input type="password" class="form-control" id="exampleInputPassword1"/>
-		</div>
-		<div class="form-group">
-			<label for="exampleInputPassword1">UserID:</label>
-			<input type="password" class="form-control" id="exampleInputPassword1"/>
-		</div>
-		<div class="form-group">
-			<label for="exampleInputPassword1">Password:</label>
-			<input type="password" class="form-control" id="exampleInputPassword1"/>
-		</div>
-		<div class="form-group">
-			<button type="submit" class="btn btn-secondary">Sign Up</button>
-		</div>
-	</form>
+<h1 class="bd-title">Create account</h1>
+<p>Enter a username and password.</p>
+<div class="alert alert-danger" role="alert">
+  <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+	 Please do not use a password you have previously used for other accounts, and avoid using information that can be used to identify you, as this site is not well encrypted.
+</div>
+
+<div class="col-lg-5">
+    <form method="post" action="{% url 'cookbook:create_user_account' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ create_user_form }}
+        </div>
+        <input type="submit" value="Create account" class="btn btn-primary"/>
+    </form>
 </div>
 
 {% endblock %}
