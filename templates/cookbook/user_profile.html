@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-<h2>Welcome to you user profile, {{ user.username }}.</h2>
+<h1 class="bd-title">Welcome to you user profile, {{ user.username }}.</h1>
 <hr>
 
 <!-- Favorited Recipes -->
@@ -10,44 +10,46 @@
         <h3>Favorited Recipes</h3>
         <div class="list-group">
             {% if user.userfavorite_set %}
-            <div class="list-group-item">
-                {% for recipe_relation in user.userfavorite_set.all %}
-                <h4 class="list-group-item-heading">
-                    <a href="{% url 'cookbook:detail' recipe_relation.recipe.id %}">{{ recipe_relation.recipe }}</a>
-                    <i> - {{ recipe_relation.recipe.description }}</i>
-                </h4>
-                {% endfor %}
-            </div>
+            {% for recipe_relation in user.userfavorite_set.all %}
+            <a class="list-group-item list-group-item-action"
+               href="{% url 'cookbook:detail' recipe_relation.recipe.id %}">
+                <h5 class="list-group-item-heading">{{ recipe_relation.recipe }}</h5>
+                <p>{{ recipe_relation.recipe.description }}</p>
+            </a>
+
+            {% endfor %}
             {% else %}
             <div class="list-group-item">
                 <h4 class="list-group-item-heading">
                     <p>No Favorites</p>
                 </h4>
             </div>
+            {% endif %}
+
         </div>
-        {% endif %}
     </div>
 </div>
 <!-- Favorited Recipes -->
 
 <!-- Saved Searches -->
+<br>
 <div class="row">
     <div class="col-md-12">
         <h3>Saved Searches</h3>
-        <div class="list-group">
-            <div class="list-group-item">
-                {% for saved_search in user.savedsearch_set.all %}
-                <h4 class="list-group-item-heading">
+        <ul class="list-group">
 
-                    <a href="{% url 'cookbook:delete_saved_search' saved_search.id %}">
-                        <i class="material-icons md-dark md-18">delete</i></a>
-                    <a href="{% url 'cookbook:saved_search_detail' saved_search.id %}">
-                        {{ saved_search.search_name}}
-                    </a>
-                </h4>
-                {% endfor %}
-            </div>
-        </div>
+            {% for saved_search in user.savedsearch_set.all %}
+            <li class="list-group-item">
+                <a href="{% url 'cookbook:saved_search_detail' saved_search.id %}">
+                    {{saved_search.search_name}}
+                </a>
+                <a href="{% url 'cookbook:delete_saved_search' saved_search.id %}">
+                    <i class="material-icons md-dark md-18 float-xs-right">delete</i>
+                </a>
+            </li>
+
+            {% endfor %}
+        </ul>
 
     </div>
 </div>
