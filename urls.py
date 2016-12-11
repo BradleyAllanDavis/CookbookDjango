@@ -1,4 +1,5 @@
 from django.conf.urls import include, url
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -17,9 +18,9 @@ urlpatterns = [url(r'^$', views.index, name='index'),
     url('^', include('django.contrib.auth.urls')),
     url(r'^saved_search_detail/(?P<saved_search_id>[0-9]+)/delete/$',
         views.delete_saved_search, name="delete_saved_search"),
-    url(r'^tag_search/(?P<tag>.+)$', views.tag_search,
-        name="tag_search"),
+    url(r'^tag_search/(?P<tag>.+)$', views.tag_search, name="tag_search"),
     url(r'^change_preferences/$', views.change_preferences,
-        name='change_preferences')
-]
+        name='change_preferences'), url(r'^username_exists/$',
+        TemplateView.as_view(template_name="cookbook/username_exists.html"),
+        name='username_exists')]
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python
