@@ -5,47 +5,60 @@
 <p style="color:red">{{ error_message }}</p>
 {% endif %}
 
-<form method="get" action="{% url 'cookbook:advanced_search' %}">
-    <table>
-        <tr>
-            <td>{{ advanced_search_form.recipe_name_search_term.label_tag }}</td>
-            <td>{{ advanced_search_form.recipe_name_search_term }}</td>
-        </tr>
-        <tr>
-            <td>{{ advanced_search_form.ingredient_name_search_term.label_tag }}</td>
-            <td>{{ advanced_search_form.ingredient_name_search_term }}</td>
-        </tr>
-        <tr>
-            <td>{{ advanced_search_form.tags.label_tag }}</td>
-            <td>{{ advanced_search_form.tags }}</td>
-        </tr>
-        <tr>
-            <td>{{ advanced_search_form.food_groups.label_tag }}</td>
-            <td>{{ advanced_search_form.food_groups }}</td>
-        </tr>
-    </table>
+<div class="row">
 
-    <input type="submit" value="Search" class="btn btn-primary"/>
-</form>
+  <!-- Search form -->
+  <div class="col-md-3">
+    <form method="get" action="{% url 'cookbook:advanced_search' %}">
+      <h6>{{ advanced_search_form.recipe_name_search_term.label_tag }}</h6>
+      <table>
+        <tr>
+          <td>{{ advanced_search_form.recipe_name_search_term }}</td>
+        </tr>
+      </table><br>
+      <h6>{{ advanced_search_form.ingredient_name_search_term.label_tag }}</h6>
+      <table>
+        <tr>
+          <td>{{ advanced_search_form.ingredient_name_search_term }}</td>
+        </tr>
+      </table><br>
+      <h6>{{ advanced_search_form.tags.label_tag }}</h6>
+      <table>
+        <tr>
+          <td>{{ advanced_search_form.tags }}</td>
+        </tr>
+      </table><br>
+      <h6>{{ advanced_search_form.food_groups.label_tag }}</h6>
+      <table>
+        <tr>
+          <td>{{ advanced_search_form.food_groups }}</td>
+        </tr>
+      </table><br>
+      <input type="submit" value="Search" class="btn btn-primary"/>
+    </form>
+  </div>
+  <!-- Search form -->
 
-{% if search_results %}
-<form method="post" action="{% url 'cookbook:save_search' %}">
-    {% csrf_token %}
-    {{ save_search_form }}
-    <input type="submit" value="Save search" class="btn btn-primary"/>
-</form>
+  <!-- Search results -->
+  <div class="col-md-9">
+    {% if search_results %}
+    <form method="post" action="{% url 'cookbook:save_search' %}">
+      {% csrf_token %}
+      {{ save_search_form }}
+      <input type="submit" value="Save search" class="btn btn-primary"/>
+    </form>
 
-<h1>Search results</h1>
-<ol>
-    {% for recipe in search_results %}
-    <li><a href="{% url 'cookbook:recipe_detail' recipe.id %}">{{ recipe.title }}</a></li>
-    {% endfor %}
-</ol>
-{% endif %}
-{% if no_matches %}
-No matching recipes.
-{% endif %}
-
+    <h1>Search results</h1>
+    <ul>
+      {% for recipe in search_results %}
+      <li><a href="{% url 'cookbook:recipe_detail' recipe.id %}">{{ recipe.title }}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if no_matches %}
+    No matching recipes.
+    {% endif %}
+  </div>
+  <!-- Search results -->
 
 {% endblock %}
-
