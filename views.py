@@ -156,6 +156,7 @@ def change_preferences(request):
         params = {"nutrients": [nutrientpref.nutrient.id for nutrientpref in request.user.nutritionpreference_set.all()]}
         form = NutritionPreferenceForm(initial=params)
         context = {"nutrition_preference_form": form}
+        add_common_context(context)
         return render(request, 'cookbook/change_preferences.html', context)
 
 
