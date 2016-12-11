@@ -145,6 +145,7 @@ def save_search(request):
     return HttpResponseRedirect(reverse('cookbook:user_profile'))
 
 
+@login_required
 def change_preferences(request):
     if request.method == 'POST':
         # delete existing preferences
