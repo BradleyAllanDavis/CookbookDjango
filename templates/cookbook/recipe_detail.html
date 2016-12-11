@@ -13,28 +13,31 @@
 
   <!-- Recipe Information -->
   <div class="col-lg-7">
-    <h3>{{ recipe.title }}
+    <h3>
+      {{ recipe.title }}
       {% if favorite_star_filled %}
       <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star" aria-hidden="true"></i></a>
       {% elif show_favorite_star %}
       <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-      {% endif %}</h3><br>
-    <h4>Description</h4>
+      {% endif %}
+    </h3>
+    <h6><small>Serves {{ recipe.serves }}</small></h6><br>
+    <h5>Description</h5>
     <p>{{ recipe.description }}</p><br>
-    <h4>Ingredients</h4>
+    <h5>Ingredients</h5>
     <ul>
       {% for ingredient in recipe.recipeingredient_set.all %}
       <li>{{ ingredient }}</li>
       {% endfor %}
     </ul>
     <br>
-    <h4>Preparation Instructions</h4>
+    <h5>Preparation Instructions</h5>
     <p>
       {{ recipe.instructions }}
     </p><br>
     <p>
       {% for recipe_tag in recipe.recipetag_set.all %}
-      <a class="tag tag-pill tag-info" href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">
+      <a class="tag tag-pill tag-primary" href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">
         {{ recipe_tag.tag.tag_name }}</a>
       {% endfor %}
     </p>
