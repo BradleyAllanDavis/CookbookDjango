@@ -48,12 +48,23 @@
   <div class="col-lg-5">
     <div class="card">
       <div class="card-block">
-        <h3 class="card-title">Nutritional information per serving</h3>
-        <ul>
-          {% for nutrient_id, nutrient in nutrients.items %}
-          <li>{{nutrient.amount}} {{nutrient.unit}} {{nutrient.name}}</li>
-          {% endfor %}
-        </ul>
+        <h3 class="card-title">Nutritional Information per serving</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nutrient</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for nutrient_id, nutrient in nutrients.items %}
+            <tr>
+              <td>{{nutrient.name}}</td>
+              <td>{{nutrient.amount}} {{nutrient.unit}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
