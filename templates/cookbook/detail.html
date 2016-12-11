@@ -7,62 +7,60 @@
 
 <div class="row">
 
-    <!-- Recipe Information -->
-    <div class="col-md-8">
-        <form>
-            <h3>{{ recipe.title }}</h3><br>
-            <h4>Description</h4>
-            <p>{{ recipe.description }}</p><br>
-            <h4>Ingredients</h4>
-            <ul>
-                {% for ingredient in recipe.recipeingredient_set.all %}
-                <li>{{ ingredient }}</li>
-                {% endfor %}
-            </ul>
-            <br>
-            <h4>Preparation Instructions</h4>
-            <p>
-                {{ recipe.instructions }}
-            </p><br>
-            <h4>Tags</h4>
-            <ul>
-                {% for recipe_tag in recipe.recipetag_set.all %}
-                <button type="button">
-                    <a href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">{{ recipe_tag.tag.tag_name }}</a>
-                </button>
-                {% endfor %}
-            </ul>
-        </form>
-    </div>
-    <!-- Recipe Information -->
+  <!-- Recipe Information -->
+  <div class="col-md-8">
+    <form>
+      <h3>{{ recipe.title }}</h3><br>
+      <h4>Description</h4>
+      <p>{{ recipe.description }}</p><br>
+      <h4>Ingredients</h4>
+      <ul>
+        {% for ingredient in recipe.recipeingredient_set.all %}
+        <li>{{ ingredient }}</li>
+        {% endfor %}
+      </ul>
+      <br>
+      <h4>Preparation Instructions</h4>
+      <p>
+        {{ recipe.instructions }}
+      </p><br>
+      <h4>Tags</h4>
+      <ul>
+        {% for recipe_tag in recipe.recipetag_set.all %}
+        <a class="btn btn-info" href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">{{ recipe_tag.tag.tag_name }}</a>
+        {% endfor %}
+      </ul>
+    </form>
+  </div>
+  <!-- Recipe Information -->
 
-    <!-- Ingredient/Nutrient Information -->
-    <div class="col-md-4">
-        <div class="thumbnail">
-            <form>
-                <h3>Nutrients in Recipe</h3>
-                {% for recipeingredient in recipe.recipeingredient_set.all %}
-                {{ recipeingredient.ingredient.name }} has (per 100g):
-                <ul>
-                    {% for ingredientnutrient in recipeingredient.ingredient.ingredientnutrient_set.all %}
-                    <li>{{ ingredientnutrient.amount }} {{ ingredientnutrient.nutrient.unit }}
-                        {{ ingredientnutrient.nutrient.name }}
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% endfor %}
-            </form>
-        </div>
+  <!-- Ingredient/Nutrient Information -->
+  <div class="col-md-4">
+    <div class="thumbnail">
+      <form>
+        <h3>Nutrients in Recipe</h3>
+        {% for recipeingredient in recipe.recipeingredient_set.all %}
+        {{ recipeingredient.ingredient.name }} has (per 100g):
+        <ul>
+          {% for ingredientnutrient in recipeingredient.ingredient.ingredientnutrient_set.all %}
+          <li>{{ ingredientnutrient.amount }} {{ ingredientnutrient.nutrient.unit }}
+            {{ ingredientnutrient.nutrient.name }}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endfor %}
+      </form>
     </div>
-    <!-- Ingredient/Nutrient Information -->
+  </div>
+  <!-- Ingredient/Nutrient Information -->
 
 </div>
 
 <!-- Favorite Recipe Button -->
 <div class="row">
-    <form>
-        <a class="btn btn-default" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
-    </form>
+  <form>
+    <a class="btn btn-default" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
+  </form>
 </div>
 <!-- Favorite Recipe Button -->
 
