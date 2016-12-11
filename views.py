@@ -177,8 +177,18 @@ def delete_saved_search(request, saved_search_id):
 def create_user_account(request):
     if request.method == 'POST':
         try:
-            User.objects.create_user(request.POST.get("username"),
+            user = User.objects.create_user(request.POST.get("username"),
                 request.POST.get("email"), request.POST.get("password"))
+            NutritionPreference(user=user,
+                nutrient=Nutrient.objects.get(pk=203)).save()
+            NutritionPreference(user=user,
+                nutrient=Nutrient.objects.get(pk=204)).save()
+            NutritionPreference(user=user,
+                nutrient=Nutrient.objects.get(pk=205)).save()
+            NutritionPreference(user=user,
+                nutrient=Nutrient.objects.get(pk=208)).save()
+            NutritionPreference(user=user,
+                nutrient=Nutrient.objects.get(pk=291)).save()
             return HttpResponseRedirect(reverse('cookbook:login'))
         except IntegrityError:
             return HttpResponseRedirect(reverse("cookbook:username_exists"))
