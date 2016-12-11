@@ -52,11 +52,10 @@
 							Account
 						</button>
 						<div class="dropdown-menu dropdown-menu-right">
-							<a class="dropdown-item" href="{% url 'cookbook:create_user_account' %}">Create Account</a>
-							<a class="dropdown-item" href="{% url 'cookbook:password_change' %}">Change Password</a>
+							<a class="dropdown-item" href="{% url 'cookbook:create_user_account' %}">Create User Account</a>
 							<a class="dropdown-item" href="{% url 'cookbook:user_profile' %}">User Profile</a>
-							<a class="dropdown-item" href="{% url 'cookbook:logout' %}?next=/cookbook">Log Out</a>
 							<a class="dropdown-item" href="{% url 'cookbook:change_preferences' %}?next=/cookbook">Change Nutrition Preferences</a>
+							<a class="dropdown-item" href="{% url 'cookbook:logout' %}?next=/cookbook">Log Out</a>
 						</div>
 					</li>
 					<!-- Dropdown menu -->
