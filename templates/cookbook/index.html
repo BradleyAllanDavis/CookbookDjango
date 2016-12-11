@@ -1,31 +1,33 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
 <!-- Recipe Thumbnails -->
 {% if recipe_list %}
-{% for recipe in recipe_list %}
-<div class="col-lg-6">
-    <div class="card">
-        <div class="card-block">
-            <h4 class="card-title">{{ recipe.title }}</h4>
-            <p class="card-text">{{recipe.description}}</p>
-            <a class="btn btn-primary" href="{% url 'cookbook:detail' recipe.id %}">View Recipe</a>
-        </div>
+<div class="card-columns">
+  {% for recipe in recipe_list %}
+  <div class="card">
+    <div class="card-block">
+      <h4 class="card-title">{{ recipe.title }}</h4>
+      <p class="card-text">{{recipe.description}}</p>
+      <a class="btn btn-secondary" href="{% url 'cookbook:detail' recipe.id %}">View Recipe</a>
     </div>
-
+  </div>
+  {% endfor %}
 </div>
-{% endfor %}
 {% else %}
 <p>No recipes are available.</p>
 {% endif %}
+<!-- Recipe Thumbnails -->
 
-<!-- Pagination -->
-<div class="text-center">
-    <ul class="pagination pagination-lg">
-        <li class="page-item">
-            <a class="page-link" href="{% url 'cookbook:index' %}">Next</a>
-        </li>
-    </ul>
+<!-- More random recipes button -->
+<div class="text-xs-center">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="btn btn-secondary" href="{% url 'cookbook:index' %}">More Random Recipes</a>
+    </li>
+  </ul>
 </div>
-<!-- Pagination -->
+<!-- More random recipes button -->
+
 {% endblock %}
