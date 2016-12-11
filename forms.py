@@ -1,13 +1,26 @@
 from django import forms
+from django.forms.utils import ErrorList
 
 from cookbook.models import FoodGroup, Tag, Nutrient
 
 
-class SimpleSearchForm(forms.Form):
+class CookbookForm(forms.Form):
+    def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,
+                 initial=None, error_class=ErrorList, label_suffix=None,
+                 empty_permitted=False, field_order=None,
+                 use_required_attribute=None):
+        super(CookbookForm, self).__init__(data, files, auto_id, prefix,
+            initial, error_class, label_suffix, empty_permitted, field_order,
+            use_required_attribute)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = "form-control"
+
+
+class SimpleSearchForm(CookbookForm):
     recipe_name_search_term = forms.CharField(label="Search", max_length=100)
 
 
-class AdvancedSearchForm(forms.Form):
+class AdvancedSearchForm(CookbookForm):
     recipe_name_search_term = forms.CharField(max_length=100, required=False,
         label='Recipe name should contain')
     ingredient_name_search_term = forms.CharField(
@@ -18,13 +31,25 @@ class AdvancedSearchForm(forms.Form):
         queryset=FoodGroup.objects.all(), required=False)
 
 
-class SaveSearchForm(forms.Form):
+class SaveSearchForm(CookbookForm):
     saved_search_name = forms.CharField(max_length=100, required=True,
         label="Name for saved search")
 
 
-class NutritionPreferenceForm(forms.Form):
+class NutritionPreferenceForm(CookbookForm):
     nutrients = forms.ModelMultipleChoiceField(queryset=Nutrient.objects.all(),
         required=True)
+
+    def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,
+                 initial=None, error_class=ErrorList, label_suffix=None,
+                 empty_permitted=False, field_order=None,
+                 use_required_attribute=None):
+        super(NutritionPreferenceForm, self).__init__(data, files, auto_id,
+            prefix, initial, error_class, label_suffix, empty_permitted,
+            field_order, use_required_attribute)
+        self.fields['nutrients'].widget.attrs['size'] = '20'
+        self.fields['nutrients'].widget.attrs['class'] = "form-control"
+
+
 
 
