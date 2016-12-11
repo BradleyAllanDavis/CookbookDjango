@@ -21,7 +21,7 @@
       <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star-o" aria-hidden="true"></i></a>
       {% endif %}
     </h3>
-    <h6><small>Serves {{ recipe.serves }}</small></h6><br>
+    <h6>Serves <small>{{ recipe.serves }}</small></h6><br>
     <h5>Description</h5>
     <p>{{ recipe.description }}</p><br>
     <h5>Ingredients</h5>
@@ -48,12 +48,23 @@
   <div class="col-lg-5">
     <div class="card">
       <div class="card-block">
-        <h3 class="card-title">Nutritional information per serving</h3>
-        <ul>
-          {% for nutrient_id, nutrient in nutrients.items %}
-          <li>{{nutrient.amount}} {{nutrient.unit}} {{nutrient.name}}</li>
-          {% endfor %}
-        </ul>
+        <h3 class="card-title">Nutritional Information per serving</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nutrient</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for nutrient_id, nutrient in nutrients.items %}
+            <tr>
+              <td>{{nutrient.name}}</td>
+              <td>{{nutrient.amount}} {{nutrient.unit}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
