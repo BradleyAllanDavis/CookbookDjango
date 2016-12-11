@@ -9,38 +9,34 @@
 
     <!-- Recipe Information -->
     <div class="col-md-8">
-        <form>
-            <h3>{{ recipe.title }}</h3><br>
-            <h4>Description</h4>
-            <p>{{ recipe.description }}</p><br>
-            <h4>Ingredients</h4>
-            <ul>
-                {% for ingredient in recipe.recipeingredient_set.all %}
-                <li>{{ ingredient }}</li>
-                {% endfor %}
-            </ul>
-            <br>
-            <h4>Preparation Instructions</h4>
-            <p>
-                {{ recipe.instructions }}
-            </p><br>
-            <h4>Tags</h4>
-            <ul>
-                {% for recipe_tag in recipe.recipetag_set.all %}
-                <button type="button">
-                    <a href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">{{ recipe_tag.tag.tag_name }}</a>
-                </button>
-                {% endfor %}
-            </ul>
-        </form>
+        <h3>{{ recipe.title }}</h3><br>
+        <h4>Description</h4>
+        <p>{{ recipe.description }}</p><br>
+        <h4>Ingredients</h4>
+        <ul>
+            {% for ingredient in recipe.recipeingredient_set.all %}
+            <li>{{ ingredient }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <h4>Preparation Instructions</h4>
+        <p>
+            {{ recipe.instructions }}
+        </p><br>
+        <p>
+            {% for recipe_tag in recipe.recipetag_set.all %}
+            <a class="tag tag-pill tag-info" href="{% url 'cookbook:tag_search' recipe_tag.tag.tag_name %}">
+                {{ recipe_tag.tag.tag_name }}</a>
+            {% endfor %}
+        </p>
     </div>
     <!-- Recipe Information -->
 
     <!-- Ingredient/Nutrient Information -->
     <div class="col-md-4">
-        <div class="thumbnail">
-            <form>
-                <h3>Nutrients in Recipe</h3>
+        <div class="card">
+            <div class="card-block">
+                <h3 class="card-title">Nutrients in Recipe</h3>
                 {% for recipeingredient in recipe.recipeingredient_set.all %}
                 {{ recipeingredient.ingredient.name }} has (per 100g):
                 <ul>
@@ -51,7 +47,7 @@
                     {% endfor %}
                 </ul>
                 {% endfor %}
-            </form>
+            </div>
         </div>
     </div>
     <!-- Ingredient/Nutrient Information -->
@@ -61,7 +57,7 @@
 <!-- Favorite Recipe Button -->
 <div class="row">
     <form>
-        <a class="btn btn-default" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
+        <a class="btn btn-secondary" href="{% url 'cookbook:favorite' recipe.id %}">Favorite Recipe</a>
     </form>
 </div>
 <!-- Favorite Recipe Button -->

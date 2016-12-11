@@ -15,8 +15,9 @@
 {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'cookbook:login' %}">
+<form method="post" action="{% url 'cookbook:login' %}" class="form-signin">
     {% csrf_token %}
+    <h2 class="form-signin-heading">Please sign in</h2>
     <table>
         <tr>
             <td>{{ form.username.label_tag }}</td>
@@ -28,7 +29,7 @@
         </tr>
     </table>
 
-    <input type="submit" value="login"/>
+    <input type="submit" value="Sign in" class="btn btn-lg btn-primary"/>
     <input type="hidden" name="next" value="{{ next }}"/>
 </form>
 

@@ -39,7 +39,8 @@
                 {% for saved_search in user.savedsearch_set.all %}
                 <h4 class="list-group-item-heading">
 
-                    <a href="{% url 'cookbook:delete_saved_search' saved_search.id %}"><i class="material-icons md-dark md-18">delete</i></a>
+                    <a href="{% url 'cookbook:delete_saved_search' saved_search.id %}">
+                        <i class="material-icons md-dark md-18">delete</i></a>
                     <a href="{% url 'cookbook:saved_search_detail' saved_search.id %}">
                         {{ saved_search.search_name}}
                     </a>
