@@ -56,4 +56,10 @@
   <!-- Saved Searches -->
 
 </div>
+
+{% if most_favorited_tag.tag_name %}
+<p>Most favorited tag: {{ most_favorited_tag.tag_name }}</p>
+<a href="{% url 'cookbook:tag_search' most_favorited_tag.tag_name %}">
+         See more recipes with this tag</a>
+{% endif %}
 {% endblock content %}
