@@ -1,29 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-<h1 class="bd-title">Welcome to you user profile, {{ user.username }}</h1>
-<hr>
+<h4 class="bd-title">Welcome to you user profile, {{ user.username }}</h4>
+<hr><br>
 
 <div class="row">
 
   <!-- Favorited Recipes -->
-  <div class="col-md-8">
+  <div class="col-md-6">
     <h3>Favorite Recipes</h3>
     <div class="list-group">
-      {% if user.userfavorite_set %}
+      {% if user.userfavorite_set.all %}
+
       {% for recipe_relation in user.userfavorite_set.all %}
       <a class="list-group-item list-group-item-action"
         href="{% url 'cookbook:recipe_detail' recipe_relation.recipe.id %}">
         <h5 class="list-group-item-heading">{{ recipe_relation.recipe }}</h5>
         <p>{{ recipe_relation.recipe.description }}</p>
       </a>
-
       {% endfor %}
+
       {% else %}
       <div class="list-group-item">
-        <h4 class="list-group-item-heading">
-          <p>No Favorites</p>
-        </h4>
+        <p>No Favorites</p>
       </div>
       {% endif %}
     </div>
@@ -31,9 +30,10 @@
   <!-- Favorited Recipes -->
 
   <!-- Saved Searches -->
-  <div class="col-md-4">
+  <div class="col-md-3">
     <h3>Saved Searches</h3>
     <ul class="list-group">
+      {% if user.savedsearch_set.all %}
 
       {% for saved_search in user.savedsearch_set.all %}
       <li class="list-group-item">
@@ -44,8 +44,13 @@
           <i class="material-icons md-dark md-18 float-xs-right">delete</i>
         </a>
       </li>
-
       {% endfor %}
+
+      {% else %}
+      <div class="list-group-item">
+        <p>No Saved Searches</p>
+      </div>
+      {% endif %}
     </ul>
   </div>
   <!-- Saved Searches -->

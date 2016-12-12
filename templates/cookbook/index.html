@@ -10,7 +10,7 @@
     <div class="card-block">
       <h4 class="card-title">{{ recipe.title }}</h4>
       <p class="card-text">{{recipe.description}}</p>
-      <a class="btn btn-secondary" href="{% url 'cookbook:recipe_detail' recipe.id %}">View Recipe</a>
+      <a class="btn btn-outline-primary" href="{% url 'cookbook:recipe_detail' recipe.id %}">View Recipe</a>
     </div>
   </div>
   {% endfor %}
@@ -24,7 +24,7 @@
 <div class="text-xs-center">
   <ul class="pagination">
     <li class="page-item">
-      <a class="btn btn-secondary" href="{% url 'cookbook:index' %}">More Random Recipes</a>
+      <a class="btn btn-secondary" href="{% url 'cookbook:index' %}">More Recipes</a>
     </li>
   </ul>
 </div>

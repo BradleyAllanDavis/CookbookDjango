@@ -1,18 +1,23 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1 class="bd-title">Change preferences</h1>
 
-<p>Select the nutrients you would like to see for each recipe. Hold down Ctrl (Windows) or Command (Mac) to select multiple.</p>
+<h1 class="bd-title">Change My Nutrient Preferences</h1><br>
 
-<div class="col-lg-5">
-    <form method="post" action="{% url 'cookbook:change_preferences' %}">
-        {% csrf_token %}
-        <div class="form-group">
-            {{ nutrition_preference_form }}
-        </div>
-        <input type="submit" value="Save" class="btn btn-primary"/>
-    </form>
+<div class="col-md-4">
+  <form method="post" action="{% url 'cookbook:change_preferences' %}">
+    <p>Select the nutrients you would like to see for each recipe.</p>
+
+    {% csrf_token %}
+    <div class="form-group">
+      {{ nutrition_preference_form }}
+    </div>
+
+    <p>Hold down Ctrl (Windows) or Command (Mac) while clicking to select multiple nutrients.</p>
+
+    <input type="submit" value="Save" class="btn btn-primary"/>
+  </form>
+
 </div>
-
 
 {% endblock content %}

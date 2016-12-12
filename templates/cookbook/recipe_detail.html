@@ -12,16 +12,15 @@
 <div class="row">
 
   <!-- Recipe Information -->
-  <div class="col-lg-7">
-    <h3>
+  <div class="col-md-8">
+    <h2>
       {{ recipe.title }}
       {% if favorite_star_filled %}
       <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star" aria-hidden="true"></i></a>
       {% elif show_favorite_star %}
       <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star-o" aria-hidden="true"></i></a>
       {% endif %}
-    </h3>
-    <h6>Serves <small>{{ recipe.serves }}</small></h6><br>
+    </h2><hr>
     <h5>Description</h5>
     <p>{{ recipe.description }}</p><br>
     <h5>Ingredients</h5>
@@ -45,31 +44,76 @@
   <!-- Recipe Information -->
 
   <!-- Ingredient/Nutrient Information -->
-  <div class="col-lg-5">
+  <div class="col-md-4">
     <div class="card">
       <div class="card-block">
-        <h3 class="card-title">Nutritional Information per serving</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nutrient</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for nutrient_id, nutrient in nutrients.items %}
-            <tr>
-              <td>{{nutrient.name}}</td>
-              <td>{{nutrient.amount}} {{nutrient.unit}}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <h1 class="card-title"><strong>Nutrition Facts</strong></h2><h1>
+          <h6>Servings Per Recipe About {{ recipe.serves }}</h6><br>
+          <h6><small>Amount Per Serving</small></h6><hr>
+          <h4 style="text-align:left">
+            <strong>Calories</strong>
+            <span style="float:right;">{{ recipe.calories }}</span>
+          </h4>
+          <!-- Standard displayed nutrients -->
+          <table class="table">
+            <tbody>
+              <tr>
+                <td><strong>{{ recipe.totalfat.name }}</strong></td>
+                <td align="right">{{ recipe.totalfat.amount }} {{ recipe.totalfat.unit }}</td>
+              </tr>
+              <tr>
+                <td>&emsp;&emsp;{{ recipe.satfat.name }}</td>
+                <td align="right">{{ recipe.satfat.amount }} {{ recipe.satfat.unit }}</td>
+              </tr>
+              <tr>
+                <td>&emsp;&emsp;{{ recipe.transfat.name }}</td>
+                <td align="right">{{ recipe.transfat.amount }} {{ recipe.transfat.unit }}</td>
+              </tr>
+              <tr>
+                <td><strong>{{ recipe.cholesterol.name }}</strong></td>
+                <td align="right">{{ recipe.cholesterol.amount }} {{ recipe.cholesterol.unit }}</td>
+              </tr>
+              <tr>
+                <td><strong>{{ recipe.sodium.name }}</strong></td>
+                <td align="right">{{ recipe.sodium.amount }} {{ recipe.sodium.unit }}</td>
+              </tr>
+              <tr>
+                <td><strong>{{ recipe.carb.name }}</strong></td>
+                <td align="right">{{ recipe.carb.amount }} {{ recipe.carb.unit }}</td>
+              </tr>
+              <tr>
+                <td>&emsp;&emsp;{{ recipe.fiber.name }}</td>
+                <td align="right">{{ recipe.fiber.amount }} {{ recipe.fiber.unit }}</td>
+              </tr>
+              <tr>
+                <td>&emsp;&emsp;{{ recipe.sugars.name }}</td>
+                <td align="right">{{ recipe.sugars.amount }} {{ recipe.sugars.unit }}</td>
+              </tr>
+              <tr>
+                <td><strong>{{ recipe.protein.name }}</strong></td>
+                <td align="right">{{ recipe.protein.amount }} {{ recipe.protein.unit }}</td>
+              </tr>
+            </tbody>
+          </table><br>
+          <!-- Standard displayed nutrients -->
+          <!-- User preference nutrients -->
+          <h5><strong>My Nutrients</strong></h5>
+          <table class="table">
+            <tbody>
+              {% for nutrient_id, nutrient in nutrients.items %}
+              <tr>
+                <td><strong>{{ nutrient.name }}</strong></td>
+                <td align="right">{{ nutrient.amount }} {{ nutrient.unit }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <!-- User preference nutrients -->
+        </div>
       </div>
     </div>
+    <!-- Ingredient/Nutrient Information -->
+
   </div>
-  <!-- Ingredient/Nutrient Information -->
 
-</div>
-
-{% endblock %}
+  {% endblock %}

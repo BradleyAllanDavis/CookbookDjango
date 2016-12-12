@@ -23,9 +23,12 @@
 		<!-- NavBar -->
 		<nav class="navbar navbar-light bg-faded" role="navigation">
 			<div class="container-fluid">
+
+				<!-- Header -->
 				<div class="navbar-header">
 					<a class="navbar-brand" href="{% url 'cookbook:index' %}">Cookbook</a>
 				</div>
+				<!-- Header -->
 
 				<!-- Left side of nav bar -->
 				<ul class="nav navbar-nav navbar-left">
@@ -35,7 +38,7 @@
 					<li class="nav-item">
 						<form class="form-inline float-right" action="{% url 'cookbook:advanced_search' %}" method="GET">
 							{{ simple_search_form.recipe_name_search_term }}
-							<input type="submit" value="Search Recipes" class="btn btn-secondary"/>
+							<input type="submit" value="Search Recipes" class="btn btn-outline-primary"/>
 						</form>
 					</li>
 				</ul>
@@ -52,9 +55,9 @@
 							Account
 						</button>
 						<div class="dropdown-menu dropdown-menu-right">
-							<a class="dropdown-item" href="{% url 'cookbook:create_user_account' %}">Create User Account</a>
-							<a class="dropdown-item" href="{% url 'cookbook:user_profile' %}">User Profile</a>
-							<a class="dropdown-item" href="{% url 'cookbook:change_preferences' %}?next=/cookbook">Change Nutrition Preferences</a>
+							<a class="dropdown-item" href="{% url 'cookbook:create_user_account' %}">Create New User Account</a>
+							<a class="dropdown-item" href="{% url 'cookbook:user_profile' %}">My User Profile</a>
+							<a class="dropdown-item" href="{% url 'cookbook:change_preferences' %}?next=/cookbook">Change My Nutrition Preferences</a>
 							<a class="dropdown-item" href="{% url 'cookbook:logout' %}?next=/cookbook">Log Out</a>
 						</div>
 					</li>
