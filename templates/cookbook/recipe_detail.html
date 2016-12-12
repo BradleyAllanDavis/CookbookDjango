@@ -21,7 +21,6 @@
       <a href="{% url 'cookbook:favorite' recipe.id %}"><i class="fa fa-star-o" aria-hidden="true"></i></a>
       {% endif %}
     </h2><hr>
-    <h5>Description</h5>
     <p>{{ recipe.description }}</p><br>
     <h5>Ingredients</h5>
     <ul>
@@ -58,40 +57,40 @@
           <table class="table">
             <tbody>
               <tr>
-                <td><strong>{{ recipe.totalfat.name }}</strong></td>
-                <td align="right">{{ recipe.totalfat.amount }} {{ recipe.totalfat.unit }}</td>
+                <td><strong>{{ recipe.totalfat.name }}Total Fat</strong></td>
+                <td align="right">{{ recipe.totalfat.amount }} {{ recipe.totalfat.unit }}1000g</td>
               </tr>
               <tr>
-                <td>&emsp;&emsp;{{ recipe.satfat.name }}</td>
-                <td align="right">{{ recipe.satfat.amount }} {{ recipe.satfat.unit }}</td>
+                <td>&emsp;&emsp;{{ recipe.satfat.name }}Sat Fat</td>
+                <td align="right">{{ recipe.satfat.amount }} {{ recipe.satfat.unit }}1000g</td>
               </tr>
               <tr>
-                <td>&emsp;&emsp;{{ recipe.transfat.name }}</td>
-                <td align="right">{{ recipe.transfat.amount }} {{ recipe.transfat.unit }}</td>
+                <td>&emsp;&emsp;{{ recipe.transfat.name }}Trans Fat</td>
+                <td align="right">{{ recipe.transfat.amount }} {{ recipe.transfat.unit }}1000g</td>
               </tr>
               <tr>
-                <td><strong>{{ recipe.cholesterol.name }}</strong></td>
-                <td align="right">{{ recipe.cholesterol.amount }} {{ recipe.cholesterol.unit }}</td>
+                <td><strong>{{ recipe.cholesterol.name }}Chol</strong></td>
+                <td align="right">{{ recipe.cholesterol.amount }} {{ recipe.cholesterol.unit }}1000g</td>
               </tr>
               <tr>
-                <td><strong>{{ recipe.sodium.name }}</strong></td>
-                <td align="right">{{ recipe.sodium.amount }} {{ recipe.sodium.unit }}</td>
+                <td><strong>{{ recipe.sodium.name }}Sodium</strong></td>
+                <td align="right">{{ recipe.sodium.amount }} {{ recipe.sodium.unit }}1000g</td>
               </tr>
               <tr>
-                <td><strong>{{ recipe.carb.name }}</strong></td>
-                <td align="right">{{ recipe.carb.amount }} {{ recipe.carb.unit }}</td>
+                <td><strong>{{ recipe.carb.name }}Carbs</strong></td>
+                <td align="right">{{ recipe.carb.amount }} {{ recipe.carb.unit }}1000g</td>
               </tr>
               <tr>
-                <td>&emsp;&emsp;{{ recipe.fiber.name }}</td>
-                <td align="right">{{ recipe.fiber.amount }} {{ recipe.fiber.unit }}</td>
+                <td>&emsp;&emsp;{{ recipe.fiber.name }}Fiber</td>
+                <td align="right">{{ recipe.fiber.amount }} {{ recipe.fiber.unit }}1000g</td>
               </tr>
               <tr>
-                <td>&emsp;&emsp;{{ recipe.sugars.name }}</td>
-                <td align="right">{{ recipe.sugars.amount }} {{ recipe.sugars.unit }}</td>
+                <td>&emsp;&emsp;{{ recipe.sugars.name }}Sugars</td>
+                <td align="right">{{ recipe.sugars.amount }} {{ recipe.sugars.unit }}1000g</td>
               </tr>
               <tr>
-                <td><strong>{{ recipe.protein.name }}</strong></td>
-                <td align="right">{{ recipe.protein.amount }} {{ recipe.protein.unit }}</td>
+                <td><strong>{{ recipe.protein.name }}Protein</strong></td>
+                <td align="right">{{ recipe.protein.amount }} {{ recipe.protein.unit }}1000g</td>
               </tr>
             </tbody>
           </table><br>
