@@ -226,7 +226,11 @@ def user_profile(request):
     most_favorited_tag = Tag.objects.raw("SELECT cookbook_tag.* FROM "
                                          "cookbook_tag INNER JOIN (SELECT cookbook_tag.tag_name, count(*) as T_COUNT FROM cookbook_userfavorite INNER "
                                          "JOIN cookbook_recipetag on cookbook_recipetag.recipe_id = cookbook_userfavorite.recipe_id INNER JOIN cookbook_tag on cookbook_recipetag.tag_id = cookbook_tag.tag_name WHERE cookbook_userfavorite.user_id = " + str(request.user.id) + " GROUP BY cookbook_tag.tag_name) ct on ct.tag_name = cookbook_tag.tag_name ORDER BY T_COUNT desc LIMIT 1;")
-    context = {"most_favorited_tag": most_favorited_tag[0]}
+    if len(list(most_favorited_tag)) == 0:
+        tag = None
+    else:
+        tag = most_favorited_tag[0]
+    context = {"most_favorited_tag": tag}
     add_common_context(context)
     return HttpResponse(template.render(context, request))
 
