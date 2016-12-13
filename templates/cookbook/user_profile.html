@@ -34,7 +34,7 @@
     <!-- Most favorited tag -->
     <h3>Most Favorited Tag</h3>
     <ul class="list-group">
-      {% if most_favorited_tag.tag_name %}
+      {% if most_favorited_tag %}
       <div class="list-group-item">
         <a href="{% url 'cookbook:tag_search' most_favorited_tag.tag_name %}">
           {{ most_favorited_tag.tag_name }}</a>
