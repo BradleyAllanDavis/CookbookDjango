@@ -36,30 +36,55 @@ def recipe_detail(request, recipe_id, error_message=None):
         except ObjectDoesNotExist:
             context["favorite_star_filled"] = False
 
-        nutrients = {}
-        context["nutrients"] = nutrients
-        # add nutrition info
-        for ri in recipe.recipeingredient_set.all():
-            for nutritionpreference in request.user.nutritionpreference_set.all():
-                nutrient = nutritionpreference.nutrient
-                try:
-                    inn = ri.ingredient.ingredientnutrient_set.get(
-                        nutrient=nutrient)
-                    nid = inn.nutrient.id
-                    if str(nid) not in nutrients:
-                        nutrients[str(nid)] = {
-                            'name': nutrient.name, 'unit': nutrient.unit,
-                            'amount': 0}
-                    amount_per_recipe = inn.amount / 100 * ri.amount * ri.gram_mapping.amount_grams
-                    amount_per_serving = amount_per_recipe / recipe.serves
-                    nutrients[str(nid)]['amount'] += amount_per_serving
-                except IngredientNutrient.DoesNotExist:
-                    pass
+        add_my_nutrients(context, recipe, request)
+
+    add_nutrition_label_nutrients(context, recipe)
 
     # add other context
     add_common_context(context)
     template = loader.get_template('cookbook/recipe_detail.html')
     return HttpResponse(template.render(context, request))
+
+
+def add_my_nutrients(context, recipe, request):
+    my_nutrients = []
+    for np in request.user.nutritionpreference_set.all():
+        my_nutrients.append(np.nutrient)
+    context["nutrients"] = amounts_for_nutrients_in_list(my_nutrients, recipe)
+
+
+def add_nutrition_label_nutrients(context, recipe):
+    # add nutrition info
+    nutrition_label_nutrients = [Nutrient.objects.get(id=208),
+        Nutrient.objects.get(id=204), Nutrient.objects.get(id=606),
+        Nutrient.objects.get(id=605), Nutrient.objects.get(id=601),
+        Nutrient.objects.get(id=307), Nutrient.objects.get(id=205),
+        Nutrient.objects.get(id=291), Nutrient.objects.get(id=269),
+        Nutrient.objects.get(id=203), Nutrient.objects.get(id=205), ]
+    context["nutrition_label"] = amounts_for_nutrients_in_list(
+        nutrition_label_nutrients, recipe)
+
+
+def amounts_for_nutrients_in_list(nutrition_label_nutrients, recipe):
+    nutrients = {}
+
+    for ri in recipe.recipeingredient_set.all():
+        for nutrient in nutrition_label_nutrients:
+            try:
+                inn = ri.ingredient.ingredientnutrient_set.get(
+                    nutrient=nutrient)
+                label = nutrient.nutrition_label_name()
+                if label not in nutrients:
+                    nutrients[label] = {
+                        'name': nutrient.name, 'unit': nutrient.unit,
+                        'amount': 0}
+                amount_per_recipe = inn.amount / 100 * ri.amount * ri.gram_mapping.amount_grams
+                amount_per_serving = amount_per_recipe / recipe.serves
+                nutrients[label]['amount'] += amount_per_serving
+            except IngredientNutrient.DoesNotExist:
+                pass
+
+    return nutrients
 
 
 @login_required
@@ -177,18 +202,8 @@ def delete_saved_search(request, saved_search_id):
 def create_user_account(request):
     if request.method == 'POST':
         try:
-            user = User.objects.create_user(request.POST.get("username"),
+            User.objects.create_user(request.POST.get("username"),
                 request.POST.get("email"), request.POST.get("password"))
-            NutritionPreference(user=user,
-                nutrient=Nutrient.objects.get(pk=203)).save()
-            NutritionPreference(user=user,
-                nutrient=Nutrient.objects.get(pk=204)).save()
-            NutritionPreference(user=user,
-                nutrient=Nutrient.objects.get(pk=205)).save()
-            NutritionPreference(user=user,
-                nutrient=Nutrient.objects.get(pk=208)).save()
-            NutritionPreference(user=user,
-                nutrient=Nutrient.objects.get(pk=291)).save()
             return HttpResponseRedirect(reverse('cookbook:login'))
         except IntegrityError:
             return HttpResponseRedirect(reverse("cookbook:username_exists"))

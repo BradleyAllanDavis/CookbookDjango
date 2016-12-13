@@ -38,7 +38,9 @@ class SaveSearchForm(CookbookForm):
 
 
 class NutritionPreferenceForm(CookbookForm):
-    nutrients = forms.ModelMultipleChoiceField(queryset=Nutrient.objects.all(),
+    nutrients = forms.ModelMultipleChoiceField(
+        queryset=Nutrient.objects.exclude(
+            id__in=[208, 204, 606, 605, 601, 307, 205, 291, 269, 203]),
         required=True)
 
     def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,
@@ -55,4 +57,3 @@ class CreateUserForm(CookbookForm):
     username = forms.CharField(max_length=100, required=True)
     email = forms.CharField(max_length=100, required=False)
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
-

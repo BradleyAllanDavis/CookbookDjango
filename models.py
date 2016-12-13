@@ -54,6 +54,19 @@ class Nutrient(models.Model):
     def __str__(self):
         return self.name + " (" + self.unit + ")"
 
+    def nutrition_label_name(self):
+        if self.id == 208: return "calories"
+        if self.id == 204: return "totalfat"
+        if self.id == 606: return "satfat"
+        if self.id == 605: return "transfat"
+        if self.id == 601: return "cholesterol"
+        if self.id == 307: return "sodium"
+        if self.id == 205: return "carb"
+        if self.id == 291: return "fiber"
+        if self.id == 269: return "sugars"
+        if self.id == 203: return "protein"
+        return str(self.id)
+
 
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey('Recipe', models.CASCADE)
@@ -167,6 +180,5 @@ class NutritionPreference(models.Model):
 
     class Meta:
         unique_together = ('user', 'nutrient')
-
 
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python
