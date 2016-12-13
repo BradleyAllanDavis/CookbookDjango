@@ -1,6 +1,7 @@
 from cookbook.forms import SimpleSearchForm
 from cookbook.models import SavedSearch, SearchFoodGroup, FoodGroup, SearchTag, \
-    Recipe, Tag
+    Recipe, Tag, Ingredient
+from django.db.models import Q
 
 
 def add_common_context(other_context):
@@ -29,9 +30,19 @@ def create_saved_search(food_groups, ingredient_name_search_term,
 
 
 def execute_saved_search(saved_search):
-    results = Recipe.objects.raw(
-        "SELECT * FROM (SELECT DISTINCT cookbook_recipe.* FROM cookbook_recipe INNER JOIN cookbook_recipetag ON cookbook_recipetag.recipe_id = cookbook_recipe.id INNER JOIN cookbook_recipeingredient ON cookbook_recipeingredient.recipe_id = cookbook_recipe.id INNER JOIN cookbook_ingredient ON cookbook_ingredient.id = cookbook_recipeingredient.ingredient_id INNER JOIN cookbook_foodgroup ON cookbook_foodgroup.id = "
-        "cookbook_ingredient.food_group_id WHERE CASE WHEN (SELECT CASE WHEN recipe_search_term is not null THEN True ELSE False END FROM cookbook_savedsearch WHERE id = " + str(saved_search.id) + ") THEN cookbook_recipe.title like '%' || (SELECT recipe_search_term FROM cookbook_savedsearch WHERE id = " + str(saved_search.id) + ") || '%' ELSE True END AND CASE  WHEN (SELECT CASE WHEN ingredient_search_term is not null THEN True ELSE False END FROM cookbook_savedsearch WHERE id = " + str(saved_search.id) + ") THEN cookbook_ingredient.name like '%' || (SELECT ingredient_search_term FROM cookbook_savedsearch WHERE id = " + str(saved_search.id) + ") || '%' ELSE True END AND CASE WHEN (SELECT CASE WHEN count(*) > 0 THEN True ELSE False END FROM cookbook_searchfoodgroup WHERE id = " + str(saved_search.id) + " AND include = 't') THEN cookbook_ingredient.food_group_id in (SELECT food_group_id FROM cookbook_searchfoodgroup WHERE id = " + str(saved_search.id) + " AND include = 't') ELSE True END AND CASE WHEN (SELECT CASE WHEN count(*) > 0 THEN True ELSE False END FROM cookbook_searchfoodgroup WHERE id = " + str(saved_search.id) + " AND include = 'f') THEN cookbook_ingredient.food_group_id not in (SELECT food_group_id FROM cookbook_searchfoodgroup WHERE id = " + str(saved_search.id) + " AND include = 'f') ELSE True END AND CASE WHEN (SELECT CASE WHEN count(*) > 0 THEN True ELSE False END FROM cookbook_searchtag WHERE id = " + str(saved_search.id) + " AND include = 't') THEN cookbook_recipetag.tag_id in (SELECT tag_id FROM cookbook_searchtag WHERE id = " + str(saved_search.id) + " and include = 't') ELSE True END AND CASE WHEN (SELECT CASE WHEN count(*) > 0 THEN True ELSE False END FROM cookbook_searchtag WHERE id = " + str(saved_search.id) + " AND include = 'f') THEN cookbook_recipetag.tag_id not in (SELECT tag_id FROM cookbook_searchtag WHERE id = " + str(saved_search.id) + " and include = 'f') ELSE True END LIMIT 5);")
+    results = Recipe.objects.all()
+    if saved_search.recipe_search_term:
+        results = results.filter(title__contains=saved_search.recipe_search_term)
+    if saved_search.ingredient_search_term:
+        results = results.select_related().filter(recipeingredient__ingredient__in=Ingredient.objects.filter(name__contains=saved_search.ingredient_search_term))
+    if saved_search.searchtag_set.all().exists():
+        results = results.filter(recipetag__tag__in=Tag.objects.select_related().filter(searchtag__search=saved_search))
+    if saved_search.searchfoodgroup_set.all().exists():
+        results = results.exclude(~Q(recipeingredient__ingredient__in=Ingredient.objects.filter(food_group__in=FoodGroup.objects.select_related().filter(searchfoodgroup__search=saved_search))))
+
+
+    # results = Recipe.objects.raw(
+    #     "SELECT * FROM (SELECT DISTINCT cookbook_recipe.* FROM cookbook_recipe INNER JOIN cookbook_recipetag ON cookbook_recipetag.recipe_id = cookbook_recipe.id INNER JOIN cookbook_recipeingredient ON cookbook_recipeingredient.recipe_id = cookbook_recipe.id INNER JOIN cookbook_ingredient ON cookbook_ingredient.id = cookbook_recipeingredient.ingredient_id INNER JOIN cookbook_foodgroup ON cookbook_foodgroup.id = "+ str(saved_search.id) +"cookbook_ingredient.food_group_id WHERE CASE WHEN (SELECT CASE WHEN recipe_search_term is not null THEN True ELSE False END FROM cookbook_savedsearch WHERE id = " + str(saved_search.id) + ") THEN cookbook_recipe.title like '%' || (SELECT recipe_search_term FROM cookbook_savedsearch WHERE id = " + str(saved_search.id) + ") || '%' ELSE True END AND CASE  WHEN (SELECT CASE WHEN ingredient_search_term is not null THEN True ELSE False END FROM cookbook_savedsearch WHERE id = " + str(saved_search.id) + ") THEN cookbook_ingredient.name like '%' || (SELECT ingredient_search_term FROM cookbook_savedsearch WHERE id = " + str(saved_search.id) + ") || '%' ELSE True END AND CASE WHEN (SELECT CASE WHEN count(*) > 0 THEN True ELSE False END FROM cookbook_searchfoodgroup WHERE id = " + str(saved_search.id) + " AND include = 't') THEN cookbook_ingredient.food_group_id in (SELECT food_group_id FROM cookbook_searchfoodgroup WHERE id = " + str(saved_search.id) + " AND include = 't') ELSE True END AND CASE WHEN (SELECT CASE WHEN count(*) > 0 THEN True ELSE False END FROM cookbook_searchfoodgroup WHERE id = " + str(saved_search.id) + " AND include = 'f') THEN cookbook_ingredient.food_group_id not in (SELECT food_group_id FROM cookbook_searchfoodgroup WHERE id = " + str(saved_search.id) + " AND include = 'f') ELSE True END AND CASE WHEN (SELECT CASE WHEN count(*) > 0 THEN True ELSE False END FROM cookbook_searchtag WHERE id = " + str(saved_search.id) + " AND include = 't') THEN cookbook_recipetag.tag_id in (SELECT tag_id FROM cookbook_searchtag WHERE id = " + str(saved_search.id) + " and include = 't') ELSE True END AND CASE WHEN (SELECT CASE WHEN count(*) > 0 THEN True ELSE False END FROM cookbook_searchtag WHERE id = " + str(saved_search.id) + " AND include = 'f') THEN cookbook_recipetag.tag_id not in (SELECT tag_id FROM cookbook_searchtag WHERE id = " + str(saved_search.id) + " and include = 'f') ELSE True END LIMIT 5);")
 
     # force fetching results by looping, so we can safely delete the
     # temporary saved search object if needed

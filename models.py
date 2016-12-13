@@ -35,9 +35,6 @@ class IngredientNutrient(models.Model):
         return str(self.ingredient) + " " + str(self.nutrient) + " " + str(
             self.amount)
 
-    def amount_string(self):
-        return str(self.amount) + str(self.nutrient.unit)
-
     class Meta:
         unique_together = ('ingredient', 'nutrient')
 
@@ -111,7 +108,6 @@ class SavedSearch(models.Model):
     recipe_search_term = models.CharField(max_length=100, blank=True, null=True)
     ingredient_search_term = models.CharField(max_length=100, blank=True,
         null=True)
-
     def __str__(self):
         return self.search_name
 
