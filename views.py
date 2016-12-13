@@ -240,6 +240,8 @@ def create_user_account(request):
 def saved_search_detail(request, saved_search_id):
     saved_search = get_object_or_404(SavedSearch, pk=saved_search_id)
     context = {'saved_search': saved_search}
+    results = execute_saved_search(saved_search)
+    context["search_results"] = results
     add_common_context(context)
     template = loader.get_template("cookbook/saved_search_detail.html")
     return HttpResponse(template.render(context, request))
