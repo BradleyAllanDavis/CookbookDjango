@@ -113,40 +113,39 @@
     </div>
     <!-- Nutrient Information -->
 
+  </div><hr><br>
+
+  <!-- Sort ingredients -->
+  <div class="col-md-4">
+    <h3 class="bd-title">Sort ingredients by nutrient</h3><br>
+    <form method="post" action="{% url 'cookbook:recipe_detail' recipe.id %}">
+      <p>Select the nutrients you would like to see for each recipe.</p>
+
+      {% csrf_token %}
+      <div class="form-group">
+        {{sort_ingredients_form}}
+      </div>
+
+      <input type="submit" value="Sort ingredients" class="btn btn-primary"/>
+    </form>
   </div>
 
-
-
-
-
-<h1 class="bd-title">Sort ingredients</h1><br>
-
-<div class="col-md-4">
-  <form method="post" action="{% url 'cookbook:recipe_detail' recipe.id %}">
-    <p>Select the nutrients you would like to see for each recipe.</p>
-
-    {% csrf_token %}
-    <div class="form-group">
-      {{sort_ingredients_form}}
-    </div>
-
-    <input type="submit" value="Sort ingredients" class="btn btn-primary"/>
-  </form>
+  {% if sorted_ingredients %}
+  <div class="col-md-6">
+    <h5>In order of increasing {{ sorted_by }}</h5>
+    <table class="table">
+      <tbody>
+        {% for name, amount in sorted_ingredients %}
+        <tr>
+          <td><strong>{{ name }}</strong></td>
+          <td>{{ amount }}</td>
+        </tr>
+        {% endfor %}
+    </tbody></table>
+  </div>
+  {% endif %}
+  <!-- Sort ingredients -->
 
 </div>
-{% if sorted_ingredients %}
-<div class="col-md-4">
-<h5>In order of increasing {{ sorted_by }}</h5>
-<table class="table">
-            <tbody>
-  {% for name, amount in sorted_ingredients %}
-  <tr>
-    <td><strong>{{ name }}</strong></td>
-    <td>{{ amount }}</td>
-  </tr>
-{% endfor %}
-</tbody></table>
-</div>
-{% endif %}
 
-  {% endblock %}
+{% endblock %}
