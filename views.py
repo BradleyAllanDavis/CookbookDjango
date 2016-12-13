@@ -301,7 +301,7 @@ def get_ingredients_sorted_by_nutrient_amount(recipe, nutrient):
     results = Ingredient.objects.raw(
         "SELECT cookbook_ingredient.* FROM cookbook_recipeingredient INNER JOIN cookbook_ingredient on cookbook_ingredient.id = cookbook_recipeingredient.ingredient_id INNER JOIN cookbook_grammapping on cookbook_grammapping.id = cookbook_recipeingredient.gram_mapping_id LEFT OUTER JOIN cookbook_ingredientnutrient on cookbook_ingredientnutrient.ingredient_id = cookbook_ingredient.id and cookbook_ingredientnutrient.nutrient_id = " + str(
             nutrient.id) + " WHERE cookbook_recipeingredient.recipe_id = " + str(
-            recipe.id) + "ORDER BY cookbook_recipeingredient.amount * cookbook_grammapping.amount_grams * cookbook_ingredientnutrient.amount;")
+            recipe.id) + "ORDER BY cookbook_recipeingredient.amount * cookbook_grammapping.amount_grams * cookbook_ingredientnutrient.amount desc;")
 
     sorted_ingredients = []
     for ingredient in results:
