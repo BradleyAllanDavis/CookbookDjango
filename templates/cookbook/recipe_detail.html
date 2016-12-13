@@ -117,9 +117,9 @@
 
   <!-- Sort ingredients -->
   <div class="col-md-3">
-    <h3 class="bd-title">Sort ingredients by nutrient</h3><br>
+    <h3 class="bd-title">Sort ingredients by Nutrient Content</h3><br>
     <form method="post" action="{% url 'cookbook:recipe_detail' recipe.id %}">
-      <p>Select the nutrients you would like to see for each recipe.</p>
+      <p>Select the nutrient you would like to see the ingredients sorted by.</p>
 
       {% csrf_token %}
       <div class="form-group">
@@ -132,7 +132,7 @@
 
   {% if sorted_ingredients %}
   <div class="col-md-5">
-    <h5>In decreasing increasing {{ sorted_by }}</h5>
+    <h5>In decreasing order by {{ sorted_by }} content</h5>
     <table class="table">
       <tbody>
         {% for name, amount in sorted_ingredients %}
