@@ -77,7 +77,7 @@
                 <td align="right">{{ nutrition_label.sodium.amount|floatformat:2 }} {{ nutrition_label.sodium.unit }}</td>
               </tr>
               <tr>
-                <td><strong>Carbohydrate</strong></td>
+                <td><strong>Total Carbohydrate</strong></td>
                 <td align="right">{{ nutrition_label.carb.amount|floatformat:2 }} {{ nutrition_label.carb.unit }}</td>
               </tr>
               <tr>
@@ -117,7 +117,7 @@
 
   <!-- Sort ingredients -->
   <div class="col-md-3">
-    <h3 class="bd-title">Sort ingredients by Nutrient Content</h3><br>
+    <h3 class="bd-title">Sort Recipe Ingredients by Nutrient Content</h3><br>
     <form method="post" action="{% url 'cookbook:recipe_detail' recipe.id %}">
       <p>Select the nutrient you would like to see the ingredients sorted by.</p>
 
