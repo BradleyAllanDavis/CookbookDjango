@@ -12,7 +12,8 @@ from cookbook.forms import AdvancedSearchForm, SaveSearchForm, \
     NutritionPreferenceForm, CreateUserForm, SortRecipeIngredientsByNutrientForm
 from cookbook.methods import *
 from cookbook.models import Recipe, UserFavorite, SavedSearch, \
-    NutritionPreference, Nutrient, IngredientNutrient, Ingredient
+    NutritionPreference, Nutrient, IngredientNutrient, Ingredient, \
+    RecipeIngredient
 
 
 def index(request):
@@ -302,13 +303,15 @@ def get_ingredients_sorted_by_nutrient_amount(recipe, nutrient):
             nutrient.id) + " WHERE cookbook_recipeingredient.recipe_id = " + str(
             recipe.id) + "ORDER BY cookbook_recipeingredient.amount * cookbook_grammapping.amount_grams * cookbook_ingredientnutrient.amount;")
 
-    sorted_ingredients = {}
+    sorted_ingredients = []
     for ingredient in results:
         ingredientnutrient = ingredient.ingredientnutrient_set.get(
             nutrient=nutrient)
-        amount_string = ingredientnutrient.amount_string()
-        sorted_ingredients[ingredient.id] = {
-            'name': ingredient.name, 'amount': amount_string}
+        recipeingredient = RecipeIngredient.objects.get(recipe=recipe,
+            ingredient=ingredient)
+        amount_string = str(
+            recipeingredient.amount * recipeingredient.gram_mapping.amount_grams * ingredientnutrient.amount) + " " + ingredientnutrient.nutrient.unit
+        sorted_ingredients.append((ingredient.name, amount_string))
 
     return sorted_ingredients
 

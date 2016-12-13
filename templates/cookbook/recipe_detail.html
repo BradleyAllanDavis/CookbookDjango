@@ -139,10 +139,10 @@
 <h5>In order of increasing {{ sorted_by }}</h5>
 <table class="table">
             <tbody>
-  {% for ingredient_id, ingredient in sorted_ingredients.items %}
+  {% for name, amount in sorted_ingredients %}
   <tr>
-    <td><strong>{{ ingredient.name }}</strong></td>
-    <td>{{ ingredient.amount }}</td>
+    <td><strong>{{ name }}</strong></td>
+    <td>{{ amount }}</td>
   </tr>
 {% endfor %}
 </tbody></table>
