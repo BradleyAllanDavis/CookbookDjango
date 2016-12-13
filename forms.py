@@ -26,10 +26,10 @@ class AdvancedSearchForm(CookbookForm):
     ingredient_name_search_term = forms.CharField(
         label="and ingredient names contain", max_length=100, required=False)
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
-        required=False, label="and tags contains all of")
+                                          required=False, label="and recipe is tagged:")
     food_groups = forms.ModelMultipleChoiceField(
         queryset=FoodGroup.objects.all(), required=False,
-        label="and food groups contain all of")
+        label="and recipe contains ingredients in food group:")
 
 
 class SaveSearchForm(CookbookForm):
