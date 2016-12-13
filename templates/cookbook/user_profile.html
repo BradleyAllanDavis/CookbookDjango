@@ -74,6 +74,13 @@
 
   </div>
 
+
+
 </div>
+
+<div class="list-group-item">
+        <a href="{% url 'cookbook:ingredient_search' most_favorited_ingredient.id %}">
+          {{ most_favorited_ingredient.name }}</a>
+      </div>
 
 {% endblock content %}

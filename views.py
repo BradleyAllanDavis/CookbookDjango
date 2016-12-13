@@ -12,7 +12,7 @@ from cookbook.forms import AdvancedSearchForm, SaveSearchForm, \
     NutritionPreferenceForm, CreateUserForm
 from cookbook.methods import *
 from cookbook.models import Recipe, UserFavorite, SavedSearch, \
-    NutritionPreference, Nutrient, IngredientNutrient
+    NutritionPreference, Nutrient, IngredientNutrient, Ingredient
 
 
 def index(request):
@@ -105,6 +105,18 @@ def favorite(request, recipe_id):
 def tag_search(request, tag):
     return HttpResponseRedirect(
         "/cookbook/advanced_search/?recipe_name_search_term=&ingredient_name_search_term=&tags=" + tag)
+
+
+def foodgroup_search(request, foodgroup_id):
+    return HttpResponseRedirect(
+        "/cookbook/advanced_search/?recipe_name_search_term=&ingredient_name_search_term=&food_groups=" + foodgroup_id)
+
+
+def ingredient_search(request, ingredient_id):
+    return HttpResponseRedirect(
+        "/cookbook/advanced_search/?recipe_name_search_term="
+        "&ingredient_name_search_term=" + Ingredient.objects.get(
+            pk=ingredient_id).name)
 
 
 @login_required
@@ -221,17 +233,52 @@ def saved_search_detail(request, saved_search_id):
     return HttpResponse(template.render(context, request))
 
 
+def add_most_favorited_ingredient(context, request):
+    most_favorited_ingredient = Ingredient.objects.raw(
+        "SELECT cookbook_ingredient.* FROM cookbook_ingredient INNER JOIN (SELECT cookbook_ingredient.id, "
+        "count(*) as I_COUNT FROM (SELECT recipe_id FROM cookbook_usersubmission WHERE user_id = " + str(
+            request.user.id) + "UNION SELECT recipe_id FROM cookbook_userfavorite WHERE user_id = " + str(
+            request.user.id) + ") cr INNER JOIN cookbook_recipeingredient on cookbook_recipeingredient.recipe_id = cr.recipe_id INNER JOIN cookbook_ingredient on cookbook_ingredient.id = cookbook_recipeingredient.ingredient_id GROUP BY cookbook_ingredient.id ) ci on ci.id = cookbook_ingredient.id ORDER BY "
+                               "I_COUNT desc LIMIT 1;")
+    if len(list(most_favorited_ingredient)) == 0:
+        ingredient = None
+    else:
+        ingredient = most_favorited_ingredient[0]
+    context["most_favorited_ingredient"] = ingredient
+
+
+def add_most_favorited_foodgroup(context, request):
+    most_favorited_ingredient = Ingredient.objects.raw(
+        "SELECT cookbook_ingredient.* FROM cookbook_ingredient INNER JOIN (SELECT cookbook_ingredient.id, "
+        "count(*) as I_COUNT FROM (SELECT recipe_id FROM cookbook_usersubmission WHERE user_id = " + str(
+            request.user.id) + "UNION SELECT recipe_id FROM cookbook_userfavorite WHERE user_id = " + str(
+            request.user.id) + ") cr INNER JOIN cookbook_recipeingredient on cookbook_recipeingredient.recipe_id = cr.recipe_id INNER JOIN cookbook_ingredient on cookbook_ingredient.id = cookbook_recipeingredient.ingredient_id GROUP BY cookbook_ingredient.id ) ci on ci.id = cookbook_ingredient.id ORDER BY "
+                               "I_COUNT desc LIMIT 1;")
+    if len(list(most_favorited_ingredient)) == 0:
+        foodgroup = None
+    else:
+        foodgroup = most_favorited_ingredient[0]
+    context["most_favorited_foodgroup"] = foodgroup
+
+
 def user_profile(request):
     template = loader.get_template('cookbook/user_profile.html')
+    context = {}
+    add_most_favorited_tag(context, request)
+    add_most_favorited_ingredient(context, request)
+    add_common_context(context)
+    return HttpResponse(template.render(context, request))
+
+
+def add_most_favorited_tag(context, request):
     most_favorited_tag = Tag.objects.raw("SELECT cookbook_tag.* FROM "
                                          "cookbook_tag INNER JOIN (SELECT cookbook_tag.tag_name, count(*) as T_COUNT FROM cookbook_userfavorite INNER "
-                                         "JOIN cookbook_recipetag on cookbook_recipetag.recipe_id = cookbook_userfavorite.recipe_id INNER JOIN cookbook_tag on cookbook_recipetag.tag_id = cookbook_tag.tag_name WHERE cookbook_userfavorite.user_id = " + str(request.user.id) + " GROUP BY cookbook_tag.tag_name) ct on ct.tag_name = cookbook_tag.tag_name ORDER BY T_COUNT desc LIMIT 1;")
+                                         "JOIN cookbook_recipetag on cookbook_recipetag.recipe_id = cookbook_userfavorite.recipe_id INNER JOIN cookbook_tag on cookbook_recipetag.tag_id = cookbook_tag.tag_name WHERE cookbook_userfavorite.user_id = " + str(
+        request.user.id) + " GROUP BY cookbook_tag.tag_name) ct on ct.tag_name = cookbook_tag.tag_name ORDER BY T_COUNT desc LIMIT 1;")
     if len(list(most_favorited_tag)) == 0:
         tag = None
     else:
         tag = most_favorited_tag[0]
-    context = {"most_favorited_tag": tag}
-    add_common_context(context)
-    return HttpResponse(template.render(context, request))
+    context["most_favorited_tag"] = tag
 
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python
