@@ -24,7 +24,10 @@ urlpatterns = [url(r'^$', views.index, name='index'),
     url(r'^ingredient_search/(?P<ingredient_id>.+)$',
         views.ingredient_search, name="ingredient_search"),
     url(r'^change_preferences/$', views.change_preferences,
-        name='change_preferences'), url(r'^username_exists/$',
+        name='change_preferences'),
+    url(r'^username_exists/$',
         TemplateView.as_view(template_name="cookbook/username_exists.html"),
-        name='username_exists')]
+        name='username_exists'),
+
+]
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python

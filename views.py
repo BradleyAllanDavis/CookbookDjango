@@ -9,7 +9,7 @@ from django.template import loader
 from django.urls import reverse
 
 from cookbook.forms import AdvancedSearchForm, SaveSearchForm, \
-    NutritionPreferenceForm, CreateUserForm
+    NutritionPreferenceForm, CreateUserForm, SortRecipeIngredientsByNutrientForm
 from cookbook.methods import *
 from cookbook.models import Recipe, UserFavorite, SavedSearch, \
     NutritionPreference, Nutrient, IngredientNutrient, Ingredient
@@ -28,6 +28,14 @@ def recipe_detail(request, recipe_id, error_message=None):
     recipe.instructions = recipe.instructions.replace("@newline@", "\n")
     context = {'recipe': recipe, 'error_message': error_message}
 
+    if request.method == 'POST':
+        nutrient_to_sort_by = Nutrient.objects.get(
+            pk=request.POST.get("nutrient"))
+        sorted_ingredients = get_ingredients_sorted_by_nutrient_amount(recipe,
+            nutrient_to_sort_by)
+        context["sorted_ingredients"] = sorted_ingredients
+        context["sorted_by"] = nutrient_to_sort_by.name
+
     if request.user.id:
         context["show_favorite_star"] = True
         try:
@@ -42,6 +50,9 @@ def recipe_detail(request, recipe_id, error_message=None):
 
     # add other context
     add_common_context(context)
+
+    context["sort_ingredients_form"] = SortRecipeIngredientsByNutrientForm()
+
     template = loader.get_template('cookbook/recipe_detail.html')
     return HttpResponse(template.render(context, request))
 
@@ -280,5 +291,25 @@ def add_most_favorited_tag(context, request):
     else:
         tag = most_favorited_tag[0]
     context["most_favorited_tag"] = tag
+
+
+def get_ingredients_sorted_by_nutrient_amount(recipe, nutrient):
+    if len(list(recipe.recipeingredient_set.all())) == 0:
+        return None
+
+    results = Ingredient.objects.raw(
+        "SELECT cookbook_ingredient.* FROM cookbook_recipeingredient INNER JOIN cookbook_ingredient on cookbook_ingredient.id = cookbook_recipeingredient.ingredient_id INNER JOIN cookbook_grammapping on cookbook_grammapping.id = cookbook_recipeingredient.gram_mapping_id LEFT OUTER JOIN cookbook_ingredientnutrient on cookbook_ingredientnutrient.ingredient_id = cookbook_ingredient.id and cookbook_ingredientnutrient.nutrient_id = " + str(
+            nutrient.id) + " WHERE cookbook_recipeingredient.recipe_id = " + str(
+            recipe.id) + "ORDER BY cookbook_recipeingredient.amount * cookbook_grammapping.amount_grams * cookbook_ingredientnutrient.amount;")
+
+    sorted_ingredients = {}
+    for ingredient in results:
+        ingredientnutrient = ingredient.ingredientnutrient_set.get(
+            nutrient=nutrient)
+        amount_string = ingredientnutrient.amount_string()
+        sorted_ingredients[ingredient.id] = {
+            'name': ingredient.name, 'amount': amount_string}
+
+    return sorted_ingredients
 
 # vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python

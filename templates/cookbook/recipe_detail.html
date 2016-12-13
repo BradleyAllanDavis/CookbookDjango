@@ -115,4 +115,38 @@
 
   </div>
 
+
+
+
+
+<h1 class="bd-title">Sort ingredients</h1><br>
+
+<div class="col-md-4">
+  <form method="post" action="{% url 'cookbook:recipe_detail' recipe.id %}">
+    <p>Select the nutrients you would like to see for each recipe.</p>
+
+    {% csrf_token %}
+    <div class="form-group">
+      {{sort_ingredients_form}}
+    </div>
+
+    <input type="submit" value="Sort ingredients" class="btn btn-primary"/>
+  </form>
+
+</div>
+{% if sorted_ingredients %}
+<div class="col-md-4">
+<h5>In order of increasing {{ sorted_by }}</h5>
+<table class="table">
+            <tbody>
+  {% for ingredient_id, ingredient in sorted_ingredients.items %}
+  <tr>
+    <td><strong>{{ ingredient.name }}</strong></td>
+    <td>{{ ingredient.amount }}</td>
+  </tr>
+{% endfor %}
+</tbody></table>
+</div>
+{% endif %}
+
   {% endblock %}

@@ -35,6 +35,9 @@ class IngredientNutrient(models.Model):
         return str(self.ingredient) + " " + str(self.nutrient) + " " + str(
             self.amount)
 
+    def amount_string(self):
+        return str(self.amount) + str(self.nutrient.unit)
+
     class Meta:
         unique_together = ('ingredient', 'nutrient')
 

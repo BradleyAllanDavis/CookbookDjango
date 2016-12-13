@@ -57,3 +57,8 @@ class CreateUserForm(CookbookForm):
     username = forms.CharField(max_length=100, required=True)
     email = forms.CharField(max_length=100, required=False)
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
+
+
+class SortRecipeIngredientsByNutrientForm(CookbookForm):
+    nutrient = forms.ModelChoiceField(queryset=Nutrient.objects.all(),
+        required=True)
