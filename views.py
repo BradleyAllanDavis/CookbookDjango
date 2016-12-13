@@ -307,8 +307,10 @@ def get_ingredients_sorted_by_nutrient_amount(recipe, nutrient):
     for ingredient in results:
         ingredientnutrient = ingredient.ingredientnutrient_set.get(
             nutrient=nutrient)
-        recipeingredient = RecipeIngredient.objects.get(recipe=recipe,
+        recipeingredients = RecipeIngredient.objects.filter(recipe=recipe,
             ingredient=ingredient)
+        if len(list(recipeingredients)) > 0:
+            recipeingredient = recipeingredients[0]
         amount_string = str(
             recipeingredient.amount * recipeingredient.gram_mapping.amount_grams * ingredientnutrient.amount) + " " + ingredientnutrient.nutrient.unit
         sorted_ingredients.append((ingredient.name, amount_string))

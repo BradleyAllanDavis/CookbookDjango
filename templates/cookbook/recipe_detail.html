@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load humanize %}
 {% block content %}
 
 {% if error_message %}
@@ -57,40 +57,40 @@
           <table class="table">
             <tbody>
               <tr>
-                <td><strong>{{ recipe.totalfat.name }}Total Fat</strong></td>
-                <td align="right">{{ recipe.totalfat.amount }} {{ recipe.totalfat.unit }}1000g</td>
+                <td><strong>Total Fat</strong></td>
+                <td align="right">{{ nutrition_label.totalfat.amount|floatformat:2 }} {{ nutrition_label.totalfat.unit }}</td>
               </tr>
               <tr>
-                <td>&emsp;&emsp;{{ recipe.satfat.name }}Sat Fat</td>
-                <td align="right">{{ recipe.satfat.amount }} {{ recipe.satfat.unit }}1000g</td>
+                <td>&emsp;&emsp;Sat Fat</td>
+                <td align="right">{{ nutrition_label.satfat.amount|floatformat:2 }} {{ nutrition_label.satfat.unit }}</td>
               </tr>
               <tr>
-                <td>&emsp;&emsp;{{ recipe.transfat.name }}Trans Fat</td>
-                <td align="right">{{ recipe.transfat.amount }} {{ recipe.transfat.unit }}1000g</td>
+                <td>&emsp;&emsp;Trans Fat</td>
+                <td align="right">{{ nutrition_label.transfat.amount|floatformat:2 }} {{ nutrition_label.transfat.unit }}</td>
               </tr>
               <tr>
-                <td><strong>{{ recipe.cholesterol.name }}Chol</strong></td>
-                <td align="right">{{ recipe.cholesterol.amount }} {{ recipe.cholesterol.unit }}1000g</td>
+                <td><strong>Chol</strong></td>
+                <td align="right">{{ nutrition_label.cholesterol.amount|floatformat:2 }} {{ nutrition_label.cholesterol.unit }}</td>
               </tr>
               <tr>
-                <td><strong>{{ recipe.sodium.name }}Sodium</strong></td>
-                <td align="right">{{ recipe.sodium.amount }} {{ recipe.sodium.unit }}1000g</td>
+                <td><strong>Sodium</strong></td>
+                <td align="right">{{ nutrition_label.sodium.amount|floatformat:2 }} {{ nutrition_label.sodium.unit }}</td>
               </tr>
               <tr>
-                <td><strong>{{ recipe.carb.name }}Carbs</strong></td>
-                <td align="right">{{ recipe.carb.amount }} {{ recipe.carb.unit }}1000g</td>
+                <td><strong>Carbs</strong></td>
+                <td align="right">{{ nutrition_label.carb.amount|floatformat:2 }} {{ nutrition_label.carb.unit }}</td>
               </tr>
               <tr>
-                <td>&emsp;&emsp;{{ recipe.fiber.name }}Fiber</td>
-                <td align="right">{{ recipe.fiber.amount }} {{ recipe.fiber.unit }}1000g</td>
+                <td>&emsp;&emsp;Fiber</td>
+                <td align="right">{{ nutrition_label.fiber.amount|floatformat:2 }} {{ nutrition_label.fiber.unit }}</td>
               </tr>
               <tr>
-                <td>&emsp;&emsp;{{ recipe.sugars.name }}Sugars</td>
-                <td align="right">{{ recipe.sugars.amount }} {{ recipe.sugars.unit }}1000g</td>
+                <td>&emsp;&emsp;Sugars</td>
+                <td align="right">{{ nutrition_label.sugars.amount|floatformat:2 }} {{ nutrition_label.sugars.unit }}</td>
               </tr>
               <tr>
-                <td><strong>{{ recipe.protein.name }}Protein</strong></td>
-                <td align="right">{{ recipe.protein.amount }} {{ recipe.protein.unit }}1000g</td>
+                <td><strong>Protein</strong></td>
+                <td align="right">{{ nutrition_label.protein.amount|floatformat:2 }} {{ nutrition_label.protein.unit }}</td>
               </tr>
             </tbody>
           </table><br>
@@ -102,7 +102,7 @@
               {% for nutrient_id, nutrient in nutrients.items %}
               <tr>
                 <td><strong>{{ nutrient.name }}</strong></td>
-                <td align="right">{{ nutrient.amount }} {{ nutrient.unit }}</td>
+                <td align="right">{{ nutrient.amount|floatformat:2 }} {{ nutrient.unit }}</td>
               </tr>
               {% endfor %}
             </tbody>
