@@ -46,6 +46,23 @@
     </div><br>
     <!-- Most favorited tag -->
 
+    <!-- Most favorited ingredient -->
+    <h3>Most Favorited Ingredient</h3>
+    <div class="list-group">
+      {% if most_favorited_ingredient %}
+      <div class="list-group-item">
+        <a href="{% url 'cookbook:ingredient_search' most_favorited_ingredient.id %}">
+          {{ most_favorited_ingredient.name }}</a>
+      </div>
+      <!-- <p>Click to see more recipes with this tag</p> -->
+      {% else %}
+      <div class="list-group-item">
+        <p>No Favorites</p>
+      </div>
+      {% endif %}
+    </div><br>
+    <!-- Most favorited ingredient -->
+
     <!-- Saved Searches -->
     <h3>Saved Searches</h3>
     <ul class="list-group">
@@ -72,13 +89,6 @@
 
   </div>
 
-
-
 </div>
-
-<div class="list-group-item">
-        <a href="{% url 'cookbook:ingredient_search' most_favorited_ingredient.id %}">
-          {{ most_favorited_ingredient.name }}</a>
-      </div>
 
 {% endblock content %}
